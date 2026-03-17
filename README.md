@@ -1,6 +1,6 @@
 # Public Goods Evaluation Council
 
-Claude Code plugin. Multi-agent council evaluates public goods projects across three waves and produces a funding recommendation.
+Claude Code plugin for the [Octant hackathon](https://synthesis.md/hack/#octant). Multi-agent council evaluates public goods projects across three waves and produces a funding recommendation.
 
 ## Setup
 
