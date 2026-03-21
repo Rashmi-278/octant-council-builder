@@ -1,0 +1,57 @@
+{
+  "$schema": "https://railway.app/railway.schema.json",
+  "build": {
+    "builder": "NIXPACKS"
+  },
+  "deploy": {
+    "restartPolicyType": "ON_FAILURE",
+    "restartPolicyMaxRetries": 3
+  },
+  "services": {
+    "collector": {
+      "source": {
+        "directory": "production/backend/collector"
+      },
+      "build": {
+        "builder": "NIXPACKS"
+      },
+      "deploy": {
+        "startCommand": "uvicorn main:app --host 0.0.0.0 --port $PORT",
+        "healthcheckPath": "/health"
+      },
+      "variables": {
+        "COUNCIL_OUT_DIR": "/app/council-out"
+      }
+    },
+    "analyst": {
+      "source": {
+        "directory": "production/backend/analyst"
+      },
+      "build": {
+        "builder": "NIXPACKS"
+      },
+      "deploy": {
+        "startCommand": "uvicorn main:app --host 0.0.0.0 --port $PORT",
+        "healthcheckPath": "/health"
+      },
+      "variables": {
+        "COUNCIL_OUT_DIR": "/app/council-out"
+      }
+    },
+    "evaluator": {
+      "source": {
+        "directory": "production/backend/evaluator"
+      },
+      "build": {
+        "builder": "NIXPACKS"
+      },
+      "deploy": {
+        "startCommand": "uvicorn main:app --host 0.0.0.0 --port $PORT",
+        "healthcheckPath": "/health"
+      },
+      "variables": {
+        "COUNCIL_OUT_DIR": "/app/council-out"
+      }
+    }
+  }
+}

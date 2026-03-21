@@ -142,3 +142,27 @@ Evaluators never see each other's scores. Independence is the point.
 - Eval agents score on exactly 5 dimensions, 1-10 scale, with calibration table
 - Data agents include edge case handling for missing data
 - All output is markdown
+
+=== OPTINPG EXTENSION START ===
+## OptInPG Extension
+
+Additional command for deploying evaluated councils to production:
+
+| Skill | Invocable | Purpose |
+|-------|-----------|---------|
+| `council:deploy-to-production` | Yes | Export council output to Railway backend + Netlify dashboard with Ostrom radar charts and EAS attestation records |
+| `council:test-octant` | Yes | Run full evaluation pipeline on 5 test Octant projects (Protocol Guild, L2BEAT, growthepie, Revoke.cash, Tor Project) |
+
+Additional agents (auto-discovered, Octant-specific):
+- `data-octant-scraper` — Scrape Octant Epoch 11+ project data
+- `data-karma` — Pull Karma GAP scores per project
+- `data-social-indexer` — Index GitHub, Farcaster, X activity
+- `data-global-sources` — Aggregate DefiLlama, OSO, L2Beat data
+- `eval-quantitative` — Numeric scoring (activity, funding efficiency, ecosystem impact)
+- `eval-qualitative` — Narrative assessment with cited evidence
+- `eval-ostrom` — Score against Elinor Ostrom's 8 Rules for Managing a Commons
+- `synth-ostrom-report` — Generate Ostrom radar chart + final report
+- `synth-eas-attestation` — Produce EAS SDK-compatible attestation JSON
+
+Reference: `Ostrom-Rules.md` at repo root contains the exact 8 rules.
+=== OPTINPG EXTENSION END ===

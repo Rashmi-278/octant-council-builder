@@ -55,3 +55,14 @@ Read this file, then follow the steps below to set up the council plugin for the
    - **How the alias works**: `--plugin-dir` loads the plugin from the repo. The council skills only appear when you use the alias — plain `claude` stays unaffected.
    - **Developing your council**: agents are markdown files in `agents/` — edit them and changes are picked up on the next `/council:evaluate`. Skills are in `skills/*/SKILL.md` — run `/reload-plugins` inside a session to pick up skill changes without restarting. No build step, no compilation.
    - **Sharing your council**: once you design your own council, push your fork and share the repo URL. Anyone can clone it and run `/council:settings` to install your council as a plugin.
+
+=== OPTINPG EXTENSION START ===
+/council:deploy-to-production [slug] – Exports the current council to a live
+production web app on Railway (3 FastAPI/LangGraph services) + Netlify (Next.js 15
+dashboard). Generates Ostrom radar charts, EAS attestation records, and shareable
+project links. Safe to ignore for normal users.
+
+/council:test-octant – Runs the full evaluation pipeline on 5 test Octant projects
+(Protocol Guild, L2BEAT, growthepie, Revoke.cash, Tor Project) to verify all agents
+work end-to-end. Output goes to council-out/.
+=== OPTINPG EXTENSION END ===

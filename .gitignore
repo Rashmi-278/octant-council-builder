@@ -1,1 +1,22 @@
 council-out/
+
+# Local Claude config
+.claude/settings.local.json
+
+# Production build artifacts
+production/frontend/node_modules/
+production/frontend/.next/
+production/frontend/out/
+production/frontend/.env*.local
+production/backend/**/__pycache__/
+production/backend/**/*.pyc
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# Environment
+.env
+.env.local
+.env.production.local

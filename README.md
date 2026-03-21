@@ -107,3 +107,19 @@ No packaging, no publishing, no registry. A council is just a repo. Fork it, red
 | Research | `data-papers`, `eval-novelty` | Academic rigor |
 
 The execution harness (orchestrator + wave pattern) stays the same. Swap agents for your domain.
+
+---
+
+### OptInPG Public Goods Extension (optional)
+
+Adds Octant-native data sources, Elinor Ostrom's 8 Rules scoring, and EAS on-chain attestations. Zero changes to the original plugin.
+
+```bash
+# Evaluate a project with Ostrom scoring (agents auto-discovered)
+/council:evaluate Protocol Guild
+
+# Deploy the dashboard to production
+/council:deploy-to-production protocol-guild
+```
+
+See `PRD.md` for full details. Agents: `data-octant-scraper`, `data-karma`, `data-social-indexer`, `data-global-sources`, `eval-quantitative`, `eval-qualitative`, `eval-ostrom`, `synth-ostrom-report`, `synth-eas-attestation`.
