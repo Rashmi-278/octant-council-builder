@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { Suspense } from 'react'
+import ReactMarkdown from 'react-markdown'
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://optinpg-evaluator-production.up.railway.app'
 
@@ -288,10 +289,54 @@ function ProjectPageContent() {
       {report && (
         <div className="bg-octant-surface rounded-lg p-6 mt-8">
           <h2 className="text-xl font-semibold mb-4">Full Report</h2>
-          <div className="prose prose-invert max-w-none text-octant-text">
-            <pre className="whitespace-pre-wrap text-sm text-octant-muted bg-octant-bg p-4 rounded-lg overflow-auto">
+          <div className="markdown-report">
+            <ReactMarkdown
+              components={{
+                h1: ({ children }) => <h1 className="text-2xl font-bold mt-6 mb-3 text-octant-text">{children}</h1>,
+                h2: ({ children }) => <h2 className="text-xl font-semibold mt-5 mb-2 text-octant-text border-b border-octant-bg pb-2">{children}</h2>,
+                h3: ({ children }) => <h3 className="text-lg font-semibold mt-4 mb-2 text-octant-accent">{children}</h3>,
+                p: ({ children }) => <p className="text-sm text-octant-muted leading-relaxed mb-3">{children}</p>,
+                strong: ({ children }) => <strong className="text-octant-text font-semibold">{children}</strong>,
+                em: ({ children }) => <em className="text-octant-muted italic">{children}</em>,
+                ul: ({ children }) => <ul className="list-disc list-inside text-sm text-octant-muted mb-3 space-y-1">{children}</ul>,
+                ol: ({ children }) => <ol className="list-decimal list-inside text-sm text-octant-muted mb-3 space-y-1">{children}</ol>,
+                li: ({ children }) => <li className="text-sm text-octant-muted leading-relaxed">{children}</li>,
+                blockquote: ({ children }) => (
+                  <blockquote className="border-l-2 border-octant-primary pl-4 my-3 text-sm text-octant-muted italic">
+                    {children}
+                  </blockquote>
+                ),
+                code: ({ children, className }) => {
+                  const isBlock = className?.includes('language-')
+                  if (isBlock) {
+                    return (
+                      <pre className="bg-octant-bg rounded-lg p-4 my-3 overflow-x-auto">
+                        <code className="text-xs text-octant-muted">{children}</code>
+                      </pre>
+                    )
+                  }
+                  return <code className="bg-octant-bg text-octant-accent text-xs px-1.5 py-0.5 rounded">{children}</code>
+                },
+                pre: ({ children }) => <>{children}</>,
+                table: ({ children }) => (
+                  <div className="overflow-x-auto my-4">
+                    <table className="w-full text-sm border-collapse">{children}</table>
+                  </div>
+                ),
+                thead: ({ children }) => <thead className="border-b border-octant-bg">{children}</thead>,
+                th: ({ children }) => <th className="text-left text-xs font-semibold text-octant-muted uppercase tracking-wider py-2 px-3">{children}</th>,
+                td: ({ children }) => <td className="text-sm text-octant-muted py-2 px-3 border-b border-octant-bg/50">{children}</td>,
+                tr: ({ children }) => <tr className="hover:bg-octant-bg/30">{children}</tr>,
+                hr: () => <hr className="border-octant-bg my-4" />,
+                a: ({ href, children }) => (
+                  <a href={href} className="text-octant-accent hover:text-octant-primary underline" target="_blank" rel="noopener noreferrer">
+                    {children}
+                  </a>
+                ),
+              }}
+            >
               {report}
-            </pre>
+            </ReactMarkdown>
           </div>
         </div>
       )}
