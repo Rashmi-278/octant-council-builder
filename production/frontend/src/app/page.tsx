@@ -6,7 +6,14 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'
 
 interface Project {
   slug: string
-  data_files: string[]
+  project?: string
+  ostrom_overall?: number | null
+  governance_maturity?: string | null
+  quant_composite?: number | null
+  created_at?: string | null
+  updated_at?: string | null
+  source?: string
+  data_files?: string[]
 }
 
 const OSTROM_PRINCIPLES = [
@@ -19,6 +26,25 @@ const OSTROM_PRINCIPLES = [
   'Rights to Organize',
   'Nested Enterprises',
 ]
+
+// Protocol Guild is the only real evaluation — everything else is demo
+const REAL_SLUGS = new Set(['protocol-guild'])
+
+function maturityColor(m: string | null | undefined): string {
+  if (!m) return 'bg-gray-800/30 text-gray-400'
+  switch (m) {
+    case 'established': return 'bg-green-900/30 text-green-400'
+    case 'developing': return 'bg-yellow-900/30 text-yellow-400'
+    case 'nascent': return 'bg-orange-900/30 text-orange-400'
+    default: return 'bg-red-900/30 text-red-400'
+  }
+}
+
+function scoreColor(score: number): string {
+  if (score >= 70) return 'text-green-400'
+  if (score >= 50) return 'text-yellow-400'
+  return 'text-orange-400'
+}
 
 export default function Home() {
   const [projects, setProjects] = useState<Project[]>([])
@@ -37,6 +63,9 @@ export default function Home() {
         setLoading(false)
       })
   }, [])
+
+  const realCount = projects.filter((p) => REAL_SLUGS.has(p.slug)).length
+  const demoCount = projects.filter((p) => !REAL_SLUGS.has(p.slug)).length
 
   return (
     <div>
@@ -105,7 +134,23 @@ export default function Home() {
 
       {/* Projects */}
       <section>
-        <h2 className="text-2xl font-bold mb-4">Evaluated Projects</h2>
+        <div className="flex items-center gap-3 mb-4">
+          <h2 className="text-2xl font-bold">Evaluated Projects</h2>
+          {projects.length > 0 && (
+            <div className="flex gap-2 text-xs">
+              {realCount > 0 && (
+                <span className="bg-green-900/30 text-green-400 px-2 py-0.5 rounded-full">
+                  {realCount} real
+                </span>
+              )}
+              {demoCount > 0 && (
+                <span className="bg-amber-900/30 text-amber-400 px-2 py-0.5 rounded-full">
+                  {demoCount} demo
+                </span>
+              )}
+            </div>
+          )}
+        </div>
         {loading && <p className="text-octant-muted">Loading projects...</p>}
         {error && (
           <div className="bg-red-900/20 border border-red-500/30 rounded-lg p-4 text-red-300">
@@ -121,30 +166,88 @@ export default function Home() {
           </div>
         )}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {projects.map((project) => (
-            <a
-              key={project.slug}
-              href={`/project/?slug=${project.slug}`}
-              className="bg-octant-surface rounded-lg p-6 hover:border-octant-primary border border-transparent transition group"
-            >
-              <h3 className="text-lg font-semibold mb-2 capitalize group-hover:text-octant-primary transition">
-                {project.slug.replace(/-/g, ' ')}
-              </h3>
-              <div className="text-octant-muted text-sm">
-                {project.data_files.length} data sources collected
-              </div>
-              <div className="mt-3 flex flex-wrap gap-1">
-                {project.data_files.map((f) => (
-                  <span
-                    key={f}
-                    className="bg-octant-bg text-octant-accent text-xs px-2 py-0.5 rounded"
-                  >
-                    {f.replace('.json', '').replace('.md', '')}
+          {projects.map((project) => {
+            const isDemo = !REAL_SLUGS.has(project.slug)
+            const displayName = project.project || project.slug.replace(/-/g, ' ')
+
+            return (
+              <a
+                key={project.slug}
+                href={`/project/?slug=${project.slug}`}
+                className={`bg-octant-surface rounded-lg p-6 border transition group relative ${
+                  isDemo
+                    ? 'border-amber-500/20 hover:border-amber-500/40'
+                    : 'border-transparent hover:border-octant-primary'
+                }`}
+              >
+                {/* Demo / Real badge */}
+                <div className="absolute top-3 right-3">
+                  {isDemo ? (
+                    <span className="bg-amber-900/40 text-amber-400 text-[10px] font-semibold px-2 py-0.5 rounded-full uppercase tracking-wider">
+                      Demo
+                    </span>
+                  ) : (
+                    <span className="bg-green-900/40 text-green-400 text-[10px] font-semibold px-2 py-0.5 rounded-full uppercase tracking-wider">
+                      Real
+                    </span>
+                  )}
+                </div>
+
+                {/* Project name */}
+                <h3 className="text-lg font-semibold mb-2 capitalize group-hover:text-octant-primary transition pr-14">
+                  {displayName}
+                </h3>
+
+                {/* Scores row */}
+                {(project.ostrom_overall != null || project.quant_composite != null) && (
+                  <div className="flex items-center gap-3 mb-3">
+                    {project.ostrom_overall != null && (
+                      <div className="flex items-baseline gap-1">
+                        <span className={`text-xl font-bold ${scoreColor(project.ostrom_overall)}`}>
+                          {project.ostrom_overall}
+                        </span>
+                        <span className="text-octant-muted text-xs">/100 Ostrom</span>
+                      </div>
+                    )}
+                    {project.quant_composite != null && (
+                      <div className="flex items-baseline gap-1">
+                        <span className={`text-lg font-semibold ${scoreColor(project.quant_composite)}`}>
+                          {project.quant_composite}
+                        </span>
+                        <span className="text-octant-muted text-xs">/100 Quant</span>
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                {/* Governance maturity badge */}
+                {project.governance_maturity && (
+                  <span className={`inline-block px-2 py-0.5 rounded-full text-xs font-medium ${maturityColor(project.governance_maturity)}`}>
+                    {project.governance_maturity.charAt(0).toUpperCase() + project.governance_maturity.slice(1)} Governance
                   </span>
-                ))}
-              </div>
-            </a>
-          ))}
+                )}
+
+                {/* Legacy: data_files for filesystem-backed projects */}
+                {project.data_files && project.data_files.length > 0 && (
+                  <>
+                    <div className="text-octant-muted text-sm mt-2">
+                      {project.data_files.length} data sources collected
+                    </div>
+                    <div className="mt-2 flex flex-wrap gap-1">
+                      {project.data_files.map((f) => (
+                        <span
+                          key={f}
+                          className="bg-octant-bg text-octant-accent text-xs px-2 py-0.5 rounded"
+                        >
+                          {f.replace('.json', '').replace('.md', '')}
+                        </span>
+                      ))}
+                    </div>
+                  </>
+                )}
+              </a>
+            )
+          })}
         </div>
       </section>
 

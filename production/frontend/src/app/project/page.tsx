@@ -180,7 +180,18 @@ function ProjectPageContent() {
         ← Back to all projects
       </a>
 
-      <h1 className="text-3xl font-bold mb-2 capitalize">{slug.replace(/-/g, ' ')}</h1>
+      <div className="flex items-center gap-3 mb-2">
+        <h1 className="text-3xl font-bold capitalize">{slug.replace(/-/g, ' ')}</h1>
+        {slug === 'protocol-guild' ? (
+          <span className="bg-green-900/40 text-green-400 text-xs font-semibold px-2.5 py-1 rounded-full uppercase tracking-wider">
+            Real Evaluation
+          </span>
+        ) : (
+          <span className="bg-amber-900/40 text-amber-400 text-xs font-semibold px-2.5 py-1 rounded-full uppercase tracking-wider">
+            Demo Data
+          </span>
+        )}
+      </div>
 
       {/* Summary bar */}
       {radarData && (
