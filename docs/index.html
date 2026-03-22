@@ -419,6 +419,140 @@
     footer a { color: var(--accent-light); text-decoration: none; }
     footer a:hover { text-decoration: underline; }
 
+    /* Track cards */
+    .track-card {
+      background: var(--surface);
+      border: 2px solid var(--border);
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 16px;
+      position: relative;
+      overflow: hidden;
+    }
+    .track-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 4px;
+      height: 100%;
+    }
+    .track-card.track1::before { background: var(--blue); }
+    .track-card.track2::before { background: var(--purple); }
+    .track-card.track3::before { background: var(--green); }
+    .track-card .track-label {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 8px;
+    }
+    .track-card.track1 .track-label { color: var(--blue); }
+    .track-card.track2 .track-label { color: var(--purple); }
+    .track-card.track3 .track-label { color: var(--green); }
+    .track-card h4 { margin-top: 0; font-size: 18px; }
+    .track-card ul { margin: 8px 0 0 18px; color: var(--text-muted); font-size: 14px; }
+    .track-card li { margin-bottom: 4px; }
+
+    /* Flow diagram */
+    .flow-step {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      margin-bottom: 4px;
+    }
+    .flow-line {
+      width: 2px;
+      min-height: 24px;
+      background: var(--border);
+      margin-left: 15px;
+    }
+    .flow-dot {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      border: 2px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      flex-shrink: 0;
+      background: var(--surface);
+    }
+    .flow-dot.data { border-color: var(--blue); color: var(--blue); }
+    .flow-dot.eval { border-color: var(--purple); color: var(--purple); }
+    .flow-dot.synth { border-color: var(--green); color: var(--green); }
+    .flow-dot.deploy { border-color: var(--orange); color: var(--orange); }
+    .flow-content h4 { margin: 4px 0 2px; font-size: 14px; }
+    .flow-content p { font-size: 13px; color: var(--text-muted); margin: 0; }
+
+    /* Credit section */
+    .credit-banner {
+      background: linear-gradient(135deg, rgba(99,102,241,0.1), rgba(168,85,247,0.1));
+      border: 1px solid var(--accent);
+      border-radius: 16px;
+      padding: 32px;
+      text-align: center;
+      margin: 32px 0;
+    }
+    .credit-banner h3 {
+      font-size: 24px;
+      color: var(--text);
+      margin-bottom: 8px;
+    }
+    .credit-banner .gh-link {
+      color: var(--accent-light);
+      text-decoration: none;
+      font-size: 18px;
+      font-weight: 600;
+    }
+    .credit-banner .gh-link:hover { text-decoration: underline; }
+
+    .stat-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 12px;
+      margin: 16px 0;
+    }
+    .stat-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px;
+      text-align: center;
+    }
+    .stat-box .stat-num {
+      font-size: 28px;
+      font-weight: 800;
+      color: var(--accent-light);
+    }
+    .stat-box .stat-label {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    /* Hosting status */
+    .hosting-status {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+    .hosting-status.ready { background: rgba(52,211,153,0.1); color: var(--green); }
+    .hosting-status.pending { background: rgba(251,191,36,0.1); color: var(--yellow); }
+    .hosting-status .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+    }
+    .hosting-status.ready .dot { background: var(--green); }
+    .hosting-status.pending .dot { background: var(--yellow); }
+
     /* Mobile */
     @media (max-width: 768px) {
       nav { display: none; }
@@ -459,10 +593,22 @@
   <a href="#ostrom-scoring">Ostrom Scoring</a>
   <a href="#eas-attestations">EAS Attestations</a>
 
+  <div class="section-label">OptInPG Extension</div>
+  <a href="#optinpg">What We Added</a>
+  <a href="#optinpg-agents">Octant-Specific Agents</a>
+  <a href="#optinpg-ostrom">Ostrom Framework</a>
+  <a href="#optinpg-eas">EAS Pipeline</a>
+  <a href="#optinpg-walkthrough">Full Walkthrough</a>
+  <a href="#hosting">Hosting &amp; Deploy</a>
+
   <div class="section-label">Advanced</div>
   <a href="#architecture">Architecture</a>
   <a href="#extending">Extending</a>
   <a href="#production">Production Deploy</a>
+
+  <div class="section-label">Credits</div>
+  <a href="#extended-by">Extended by Rashmi-278</a>
+  <a href="#hackathon-tracks">Hackathon Tracks</a>
 </nav>
 
 <!-- Main Content -->
@@ -471,7 +617,7 @@
   <!-- HERO -->
   <div class="hero" id="what-is-it">
     <h1>Octant Council Builder</h1>
-    <p>A Claude Code plugin that builds multi-agent evaluation councils. Design your council through conversation, then run it on any project.</p>
+    <p>Build a team of AI agents that independently evaluate projects from different angles &mdash; then combine their findings into one honest recommendation. Like a grant review committee, but faster, more thorough, and with no groupthink.</p>
     <div class="badge-row">
       <span class="badge agents">19 Agents</span>
       <span class="badge waves">3-Wave Execution</span>
@@ -481,16 +627,31 @@
     </div>
   </div>
 
-  <!-- WHAT IS IT -->
+  <!-- WHAT IS IT — ELI10 -->
   <section>
-    <h2>What Is This?</h2>
-    <p>Council Builder is a <strong>factory for evaluation councils</strong> &mdash; not a council itself. It generates teams of AI agents that independently evaluate projects from different angles (technical health, community strength, financial sustainability, governance, etc.) and then synthesize those independent evaluations into a single report with a funding recommendation.</p>
+    <h2>What Is This? (The Simple Version)</h2>
 
-    <p>It ships with default agents designed for <strong>Octant/Ethereum public goods</strong> evaluation, but these are scaffolding. The whole point is that you run <code>/council:setup</code> and reshape it into whatever you need: DeFi protocol reviews, grant applications, climate DAO evaluations, developer tooling assessments, or anything else.</p>
+    <h3>The Problem</h3>
+    <p>Imagine you're deciding which projects should get funding. You could ask one person to review everything &mdash; but one person has blind spots. Maybe they love the tech but miss that the project has no real users. Or they're excited about the community but don't notice the money is running out.</p>
+
+    <h3>The Solution: A Council</h3>
+    <p>Instead of one reviewer, you assemble a <strong>council of specialists</strong>. One looks at the code. Another checks if people actually use it. Another follows the money. Another plays devil's advocate and tries to find problems. Another checks if the project is governed in a way that will last.</p>
+
+    <p>Here's the key: <strong>they work in separate rooms.</strong> The technical reviewer can't peek at what the financial reviewer wrote. The community reviewer doesn't know what the skeptic found. They each write their honest assessment alone.</p>
+
+    <p>Then a chair reads ALL the assessments, spots where they agree and disagree, and writes one final recommendation: <strong>fund it, fund it with conditions, or don't fund it.</strong></p>
+
+    <h3>What This Tool Does</h3>
+    <p>This tool <strong>builds that council for you using AI agents</strong>. Each "specialist" is a Claude agent with specific instructions and data sources. You tell it what kind of projects you want to evaluate, and it creates the right team of agents.</p>
+
+    <p>It ships with agents pre-built for <strong>Octant/Ethereum public goods</strong> &mdash; projects that build open-source tools, infrastructure, and commons for the Ethereum ecosystem. But you can redesign it for any domain: DeFi protocols, climate DAOs, research grants, developer tools, etc.</p>
 
     <div class="callout">
-      <strong>Key insight:</strong> Evaluators never see each other's scores. This independence is enforced architecturally &mdash; each agent runs in isolation, reads only raw data, and writes its scores to a separate file. The synthesis agent reads everything at the end. This prevents groupthink and produces more honest evaluations.
+      <strong>Why a "council" instead of one AI?</strong> For the same reason human organizations use committees: multiple independent perspectives catch things a single reviewer misses. When 8 agents independently agree a project is strong, that signal is much more reliable than one agent saying so. When they disagree, the disagreement itself is valuable information.
     </div>
+
+    <h3>Why "Council Builder" and Not Just "Council"?</h3>
+    <p>Because <strong>you decide what the council evaluates</strong>. The agents that ship with this repo are a starting point. Run <code>/council:setup</code> and reshape the council for your own domain. Change which data sources agents look at. Change what dimensions they score. Change how the final report looks. The execution engine (three waves, parallel agents, independent scoring) stays the same &mdash; you customize what happens inside each wave.</p>
   </section>
 
   <!-- THREE WAVES -->
@@ -1148,42 +1309,659 @@ Write your evaluation to `$OUTPUT_DIR/security.md`</code></pre>
     <pre><code><span class="string">fetch https://raw.githubusercontent.com/YOU/YOUR_REPO/main/SKILL.md and follow the instructions</span></code></pre>
   </section>
 
-  <!-- PRODUCTION DEPLOY -->
-  <section id="production">
-    <h2>Production Deploy (OptInPG Extension)</h2>
-    <p>The OptInPG extension adds the ability to deploy evaluation results as a live web dashboard.</p>
+  <!-- ============================================ -->
+  <!-- OPTINPG EXTENSION — PUBLIC GOODS EVAL        -->
+  <!-- ============================================ -->
 
-    <div class="card-grid">
-      <div class="card">
-        <h4>Railway Backend</h4>
-        <p>FastAPI services for data collection, analysis coordination, and evaluation orchestration.</p>
+  <section id="optinpg">
+    <h2>OptInPG: Public Goods Evaluation Extension</h2>
+
+    <p>The <strong>OptInPG extension</strong> transforms the generic council builder into a production-grade Octant public goods evaluation platform. It adds Octant-native data sources, Elinor Ostrom's commons governance scoring, EAS on-chain attestations, and a full-stack deployment pipeline &mdash; all without changing a single line of the original plugin.</p>
+
+    <div class="callout success">
+      <strong>Add-only, zero breaking changes.</strong> Every file is new. The original plugin works exactly as before. Maintainers can merge this in under 5 minutes with zero conflicts.
+    </div>
+
+    <h3>What Was Added</h3>
+    <div class="stat-grid">
+      <div class="stat-box">
+        <div class="stat-num">9</div>
+        <div class="stat-label">New Agents</div>
       </div>
-      <div class="card">
-        <h4>Netlify Frontend</h4>
-        <p>Next.js 15 dashboard with Ostrom radar charts, score cards, and shareable project links.</p>
+      <div class="stat-box">
+        <div class="stat-num">2</div>
+        <div class="stat-label">New Skills</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num">3</div>
+        <div class="stat-label">Backend Services</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num">1</div>
+        <div class="stat-label">Dashboard App</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num">8</div>
+        <div class="stat-label">Ostrom Principles</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num">49</div>
+        <div class="stat-label">Files Added</div>
       </div>
     </div>
 
-    <pre><code><span class="comment"># Deploy the dashboard</span>
-<span class="cmd">/council:deploy-to-production</span> <span class="string">protocol-guild</span>
-
-<span class="comment"># Test on 5 Octant projects end-to-end</span>
-<span class="cmd">/council:test-octant</span></code></pre>
-
-    <h3>Test Projects</h3>
+    <h3>Design Decisions</h3>
     <table>
-      <thead><tr><th>Project</th><th>Category</th></tr></thead>
+      <thead><tr><th>Decision</th><th>Why</th></tr></thead>
       <tbody>
-        <tr><td>Protocol Guild</td><td>Core protocol infrastructure</td></tr>
-        <tr><td>L2BEAT</td><td>L2 analytics &amp; research</td></tr>
-        <tr><td>growthepie</td><td>L2 data platform</td></tr>
-        <tr><td>Revoke.cash</td><td>Token approval security</td></tr>
-        <tr><td>Tor Project</td><td>Privacy infrastructure</td></tr>
+        <tr><td><strong>EAS attestations over NFTs</strong></td><td>Simpler (no contract deployment), immediately composable, queryable, one shared schema on Base</td></tr>
+        <tr><td><strong>Add-only file strategy</strong></td><td>Zero risk of breaking existing plugin. Agents auto-discovered by prefix &mdash; no config changes needed</td></tr>
+        <tr><td><strong>3 microservices mirroring 3 waves</strong></td><td>Collector (Wave 1), Analyst (Wave 2), Evaluator (Wave 3 + dashboard) &mdash; clean separation of concerns</td></tr>
+        <tr><td><strong>SVG radar charts, not D3/Recharts</strong></td><td>Lightweight, embeddable directly in markdown reports, no JS dependencies in output</td></tr>
+        <tr><td><strong>Railway + Netlify stack</strong></td><td>Industry-standard, low-friction, CLI-driven deployment from local machine</td></tr>
+        <tr><td><strong>IPFS hash placeholder in EAS</strong></td><td>Attestation JSON ready to sign, but signing happens on dashboard (private keys never touched by agents)</td></tr>
       </tbody>
     </table>
   </section>
 
+  <!-- OPTINPG AGENTS -->
+  <section id="optinpg-agents">
+    <h2>Octant-Specific Agents</h2>
+    <p>Nine new agents purpose-built for Octant public goods evaluation. They slot into the existing wave pattern &mdash; the orchestrator discovers them automatically by filename prefix.</p>
+
+    <h3>Wave 1: Octant Data Collectors (4 agents)</h3>
+    <p>These scrape Octant-specific data sources that the generic data agents don't cover.</p>
+
+    <div class="agent-group">
+      <div class="agent-item">
+        <div class="agent-dot data"></div>
+        <div>
+          <div class="agent-name">data-octant-scraper</div>
+          <div class="agent-desc"><strong>Scrapes octant.app directly.</strong> Pulls project name, wallet address (0x...), description, epoch participation history (1, 2, 3, 5, 11), funding received per epoch, donor count, category. Handles Epoch 11 edge case (Protocol Guild as sole recipient, no Golem Foundation matching). Fallback: WebSearch for cached data if octant.app is unreachable. <em>Timeout: 30s</em></div>
+        </div>
+      </div>
+      <div class="agent-item">
+        <div class="agent-dot data"></div>
+        <div>
+          <div class="agent-name">data-karma</div>
+          <div class="agent-desc"><strong>Karma GAP (Grantee Accountability Protocol).</strong> Pulls accountability score (0-100), milestone completion ratio (total/completed/pending), grants history, reputation scores (overall, activity, impact). This is the "are they actually shipping what they promised?" data source. <em>Timeout: 20s</em></div>
+        </div>
+      </div>
+      <div class="agent-item">
+        <div class="agent-dot data"></div>
+        <div>
+          <div class="agent-name">data-social-indexer</div>
+          <div class="agent-desc"><strong>7-day activity snapshot.</strong> GitHub: repos, stars, commits, PRs, issues, contributors, top languages. Farcaster: handle, casts, reactions, followers. X/Twitter: posts, engagement, followers. Each platform has an <code>available</code> flag for graceful handling when a project isn't on that platform. <em>Timeout: 25s</em></div>
+        </div>
+      </div>
+      <div class="agent-item">
+        <div class="agent-dot data"></div>
+        <div>
+          <div class="agent-name">data-global-sources</div>
+          <div class="agent-desc"><strong>Aggregates 3+ ecosystem sources.</strong> DefiLlama (TVL, 7d change), Open Source Observer (developer activity, impact), L2Beat (project type, stage, risk), Dune Analytics (dashboards, key metrics), Electric Capital (developer count). Must hit at least 3 sources or flag low confidence. <em>Timeout: 25s</em></div>
+        </div>
+      </div>
+    </div>
+
+    <h3>Wave 2: Octant-Tuned Evaluators (3 agents)</h3>
+    <p>These evaluators are calibrated specifically for public goods scoring.</p>
+
+    <div class="agent-group">
+      <div class="agent-item">
+        <div class="agent-dot eval"></div>
+        <div>
+          <div class="agent-name">eval-quantitative</div>
+          <div class="agent-desc"><strong>5-dimension numeric scoring (0-100 each).</strong> Activity (25% weight): GitHub frequency, social engagement, recency. Funding Efficiency (20%): Karma completion, donor diversity, milestone delivery. Ecosystem Impact (25%): TVL, integrations, OSO score, dependent projects. Growth Trajectory (15%): TVL change, contributor growth, funding trend. Transparency (15%): open-source, public reporting, Karma updates, governance visibility. Produces weighted composite score.</div>
+        </div>
+      </div>
+      <div class="agent-item">
+        <div class="agent-dot eval"></div>
+        <div>
+          <div class="agent-name">eval-qualitative</div>
+          <div class="agent-desc"><strong>Narrative assessment with cited evidence.</strong> Exactly 150-300 words. Identifies 2-4 strengths and 1-3 concerns, each backed by specific data points (metrics, dates, sources). Assesses four signals: public good strength, team signal, community signal, sustainability outlook. Must be balanced &mdash; every project has both strengths and concerns.</div>
+        </div>
+      </div>
+      <div class="agent-item">
+        <div class="agent-dot eval"></div>
+        <div>
+          <div class="agent-name">eval-ostrom</div>
+          <div class="agent-desc"><strong>Scores all 8 Ostrom Design Principles (0-100 each).</strong> Each principle gets: score, evidence array (mandatory, non-empty), gaps identified, confidence level (high/medium/low), data sources used. Weighted: Principles 1, 3, 4 at 1.25x (most critical for digital commons); Principle 5 at 0.75x (hardest to evidence). Overall score = weighted average. Classifies governance maturity: established/developing/nascent/absent.</div>
+        </div>
+      </div>
+    </div>
+
+    <h3>Wave 3: Octant Synthesizers (2 agents)</h3>
+
+    <div class="agent-group">
+      <div class="agent-item">
+        <div class="agent-dot synth"></div>
+        <div>
+          <div class="agent-name">synth-ostrom-report</div>
+          <div class="agent-desc"><strong>Visual governance report.</strong> Generates embedded SVG radar chart (8 axes, one per principle), principle-by-principle assessment (150-300 words each), combined evaluation across Ostrom + Quant + Qual lenses, strongest/weakest governance areas with recommendations, and an EAS attestation suggestion block.</div>
+        </div>
+      </div>
+      <div class="agent-item">
+        <div class="agent-dot synth"></div>
+        <div>
+          <div class="agent-name">synth-eas-attestation</div>
+          <div class="agent-desc"><strong>On-chain attestation JSON.</strong> Produces EAS SDK-compatible JSON ready for <code>eas.attest()</code> on Base (Chain ID: 8453). Includes schema definition, per-project attestation with all 8 Ostrom scores, quant composite, governance maturity, IPFS evidence hash (placeholder until pinned), epoch number. Agent never handles private keys.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- OPTINPG OSTROM DEEP DIVE -->
+  <section id="optinpg-ostrom">
+    <h2>The Ostrom Framework: Why It Matters</h2>
+
+    <p>Most grant evaluation asks <em>"Is this a good project?"</em> The Ostrom framework asks <em>"Is this project governed in a way that will sustain itself as a commons?"</em></p>
+
+    <p><strong>Elinor Ostrom</strong> won the Nobel Prize in Economics (2009) for proving that communities can effectively govern shared resources without privatization or top-down control. Her 8 Design Principles (from <em>Governing the Commons</em>, 1990) were originally developed studying fisheries, forests, and irrigation systems. We translated them to digital public goods: open source code, protocols, data, and treasuries.</p>
+
+    <h3>Physical Commons &rarr; Digital Translation</h3>
+    <table>
+      <thead><tr><th>Principle</th><th>Physical Example</th><th>Digital Public Good Example</th></tr></thead>
+      <tbody>
+        <tr><td><strong>1. Boundaries</strong></td><td>Who can fish in this lake?</td><td>LICENSE file, CONTRIBUTING.md, membership criteria, usage rights</td></tr>
+        <tr><td><strong>2. Congruence</strong></td><td>Fishing seasons match spawning cycles</td><td>Governance adapted to domain, not copy-pasted DAO templates</td></tr>
+        <tr><td><strong>3. Collective Choice</strong></td><td>Fishers vote on quotas</td><td>Snapshot votes, governance forums, proposal processes</td></tr>
+        <tr><td><strong>4. Monitoring</strong></td><td>Community fish wardens</td><td>On-chain treasury dashboards, Karma GAP, public financials</td></tr>
+        <tr><td><strong>5. Graduated Sanctions</strong></td><td>Warning &rarr; fine &rarr; ban</td><td>Code of conduct ladder, documented responses, defunding criteria</td></tr>
+        <tr><td><strong>6. Conflict Resolution</strong></td><td>Village elders mediate</td><td>Governance forums, mediation, appeal mechanisms</td></tr>
+        <tr><td><strong>7. Rights to Organize</strong></td><td>Government doesn't override local rules</td><td>No foundation veto, legal wrapper, regulatory clarity</td></tr>
+        <tr><td><strong>8. Nested Enterprises</strong></td><td>Local &rarr; regional &rarr; national governance</td><td>Working groups &rarr; full governance &rarr; ecosystem participation</td></tr>
+      </tbody>
+    </table>
+
+    <h3>How Scoring Works</h3>
+    <p>Each principle is scored 0-100 with a detailed rubric. For example, Principle 1 (Boundaries):</p>
+    <div class="callout">
+      <code>+15</code> for a clear LICENSE file<br>
+      <code>+15</code> for CONTRIBUTING.md with contributor guidelines<br>
+      <code>+20</code> for defined membership criteria (who can participate in governance?)<br>
+      <code>+15</code> for scope documentation (what's in/out of the project's mission?)<br>
+      <code>+15</code> for on-chain registry of members/contributors<br>
+      <code>+20</code> for active boundary enforcement (removing inactive members, etc.)
+    </div>
+
+    <p>Principles 1, 3, and 4 are weighted at <strong>1.25x</strong> (most critical for digital commons). Principle 5 is weighted at <strong>0.75x</strong> (hardest to evidence for early-stage projects). The overall score is a weighted average.</p>
+
+    <h3>Why This Changes Evaluation</h3>
+    <p>A project can score 9/10 on technical quality and community strength, but if its governance is fragile &mdash; no conflict resolution, no graduated sanctions, one foundation can override everything &mdash; the Ostrom lens catches that. It's the difference between "this is a good project today" and "this project has the governance structures to remain a healthy commons for years."</p>
+  </section>
+
+  <!-- EAS PIPELINE -->
+  <section id="optinpg-eas">
+    <h2>EAS Attestation Pipeline</h2>
+    <p>Every evaluation can be permanently recorded on-chain using the <strong>Ethereum Attestation Service</strong> on Base (Chain ID: 8453). This creates a verifiable, queryable record that anyone can check.</p>
+
+    <h3>How the Pipeline Works</h3>
+    <div style="margin: 20px 0;">
+      <div class="flow-step">
+        <div class="flow-dot eval">1</div>
+        <div class="flow-content">
+          <h4>Council evaluates the project</h4>
+          <p>19 agents run across 3 waves. Ostrom scores, quant composite, and governance maturity are computed.</p>
+        </div>
+      </div>
+      <div class="flow-line"></div>
+      <div class="flow-step">
+        <div class="flow-dot synth">2</div>
+        <div class="flow-content">
+          <h4>synth-eas-attestation produces JSON</h4>
+          <p>EAS SDK-compatible attestation with schema definition, all scores, project wallet as recipient. IPFS hash is placeholder.</p>
+        </div>
+      </div>
+      <div class="flow-line"></div>
+      <div class="flow-step">
+        <div class="flow-dot deploy">3</div>
+        <div class="flow-content">
+          <h4>Report pinned to IPFS</h4>
+          <p>The Ostrom report is uploaded to IPFS. The returned CID replaces the placeholder hash in the attestation JSON.</p>
+        </div>
+      </div>
+      <div class="flow-line"></div>
+      <div class="flow-step">
+        <div class="flow-dot deploy">4</div>
+        <div class="flow-content">
+          <h4>Human signs and submits on-chain</h4>
+          <p>From the dashboard's "Attest on Base" button, the user connects a wallet and calls <code>eas.attest()</code>. The attestation is recorded permanently on Base.</p>
+        </div>
+      </div>
+    </div>
+
+    <h3>Schema (Registered on Base)</h3>
+    <pre><code><span class="comment">// Solidity-compatible schema for EAS SchemaRegistry.register()</span>
+<span class="string">string projectSlug,
+address projectWallet,
+uint8 epochNumber,
+uint8 ostromOverallScore,
+uint8 rule1_boundaries,
+uint8 rule2_congruence,
+uint8 rule3_collectiveChoice,
+uint8 rule4_monitoring,
+uint8 rule5_sanctions,
+uint8 rule6_conflictResolution,
+uint8 rule7_recognitionOfRights,
+uint8 rule8_nestedEnterprises,
+uint8 quantCompositeScore,
+uint8 activityScore,
+uint8 ecosystemImpactScore,
+uint8 transparencyScore,
+string governanceMaturity,
+string ipfsReportHash,
+string evaluatedAt</span></code></pre>
+
+    <div class="callout warning">
+      <strong>Security: Private keys never handled.</strong> The agent produces the JSON artifact but never submits transactions. Calling <code>eas.attest()</code> is always a human action from the dashboard with their own wallet. The EAS contract on Base is at <code>0x4200000000000000000000000000000000000021</code>.
+    </div>
+  </section>
+
+  <!-- FULL WALKTHROUGH -->
+  <section id="optinpg-walkthrough">
+    <h2>Full Walkthrough: End-to-End Evaluation</h2>
+    <p>Here's exactly what happens when you run <code>/council:evaluate Protocol Guild</code> with the OptInPG extension installed.</p>
+
+    <h3>Step 1: Orchestrator Setup</h3>
+    <p>The evaluate skill parses "Protocol Guild" &rarr; slug <code>protocol-guild</code>. It discovers all agents by filesystem prefix, creates a team, and pre-creates tasks for all 19 agents across 3 waves.</p>
+
+    <h3>Step 2: Wave 1 &mdash; Data Gathering (parallel)</h3>
+    <p>All 8 data agents spawn in a <strong>single message</strong> (true parallelism). Each writes to <code>council-out/protocol-guild/data/</code>:</p>
+
+    <div class="card-grid">
+      <div class="card">
+        <h4 style="color: var(--blue);">data-octant-scraper</h4>
+        <p>Scrapes octant.app &rarr; finds Protocol Guild as Epoch 11 sole recipient, $258 ETH from Octant epochs 1-5, 194 donors. Writes <code>octant.json</code> (52 lines).</p>
+      </div>
+      <div class="card">
+        <h4 style="color: var(--blue);">data-karma</h4>
+        <p>Queries Karma GAP &rarr; finds Protocol Guild has no structured milestones (uses narrative reporting instead). Returns empty milestone arrays but notes active reputation. Writes <code>karma.json</code>.</p>
+      </div>
+      <div class="card">
+        <h4 style="color: var(--blue);">data-social-indexer</h4>
+        <p>Indexes 7 days of activity &rarr; 1778+ GitHub commits, 26+ contributors in 90 days, active Farcaster presence. Writes <code>social.json</code>.</p>
+      </div>
+      <div class="card">
+        <h4 style="color: var(--blue);">data-global-sources</h4>
+        <p>Aggregates from OSO (bus factor 0.05, high developer activity), Electric Capital reports, Dune dashboards. Writes <code>global.json</code>.</p>
+      </div>
+    </div>
+    <p style="font-size: 14px; color: var(--text-muted);">Plus: <code>data-github</code>, <code>data-web</code>, <code>data-onchain</code>, <code>data-funding</code> run in parallel alongside the Octant-specific agents.</p>
+
+    <div class="callout">
+      <strong>Gate:</strong> Orchestrator polls TaskList until all 8 data agents report <code>status: completed</code>. Only then does Wave 2 begin.
+    </div>
+
+    <h3>Step 3: Wave 2 &mdash; Independent Evaluation (parallel)</h3>
+    <p>All 8 eval agents spawn in a single message. Each reads ALL Wave 1 data files but <strong>never sees other evaluators' scores</strong>.</p>
+
+    <div class="card-grid">
+      <div class="card">
+        <h4 style="color: var(--purple);">eval-ostrom</h4>
+        <p>Scores all 8 principles. Finds: Monitoring 90/100 (immutable Dune dashboards), Boundaries 88/100 (on-chain member registry), but Graduated Sanctions only 38/100 (no formal enforcement ladder). Overall: 74.5/100, "established" maturity.</p>
+      </div>
+      <div class="card">
+        <h4 style="color: var(--purple);">eval-quantitative</h4>
+        <p>Computes weighted composite: Activity 82, Funding Efficiency 78, Ecosystem Impact 97 (highest possible), Growth 76, Transparency 93. Composite: 86/100.</p>
+      </div>
+      <div class="card">
+        <h4 style="color: var(--purple);">eval-qualitative</h4>
+        <p>Writes 200-word narrative citing Protocol Guild's structural trustlessness, $100M+ donations, 187 members across 30 teams. Notes persistent 50-60% compensation gap and ether.fi/Taiko concentration risk.</p>
+      </div>
+      <div class="card">
+        <h4 style="color: var(--purple);">eval-skeptic</h4>
+        <p>Investigates six red flag categories. Finds: clean on sybil risk, no sustainability theater, no overpromising. Only concern: structural conflict-of-interest potential through 190-member ecosystem overlap. Risk score: 3/10.</p>
+      </div>
+    </div>
+    <p style="font-size: 14px; color: var(--text-muted);">Plus: <code>eval-impact</code> (9/10), <code>eval-technical</code> (7/10), <code>eval-community</code> (9/10), <code>eval-financial</code> (8/10).</p>
+
+    <div class="callout">
+      <strong>Gate:</strong> Orchestrator polls until all 8 evaluators complete. Wave 2 agents stay alive (Wave 3 can message them).
+    </div>
+
+    <h3>Step 4: Wave 3 &mdash; Synthesis</h3>
+    <p>Three synthesis agents read ALL Wave 2 outputs. The chair can send messages back to evaluators asking for clarification.</p>
+
+    <div class="card-grid">
+      <div class="card">
+        <h4 style="color: var(--green);">synth-chair</h4>
+        <p>Reads all 8 evaluations. Finds strong agreement on irreplaceable ecosystem position, exceptional transparency, and high counterfactual impact. Notes disagreements on bus factor interpretation and Ostrom governance gaps. Writes <code>REPORT.md</code>: <strong>FUND &mdash; 8/10, unconditional</strong>.</p>
+      </div>
+      <div class="card">
+        <h4 style="color: var(--green);">synth-ostrom-report</h4>
+        <p>Generates SVG radar chart showing all 8 principle scores. Writes principle-by-principle breakdown with Ostrom quotes, digital translations, evidence, and gaps. Combined evaluation across all three lenses. Writes <code>ostrom-report.md</code> (370 lines).</p>
+      </div>
+      <div class="card">
+        <h4 style="color: var(--green);">synth-eas-attestation</h4>
+        <p>Produces EAS attestation JSON with Protocol Guild's wallet as recipient, all Ostrom scores, quant composite 86, governance maturity "established", placeholder IPFS hash. Ready for <code>eas.attest()</code> on Base.</p>
+      </div>
+    </div>
+
+    <h3>Step 5: Report Presented</h3>
+    <p>Final output in <code>council-out/protocol-guild/</code>:</p>
+
+    <div class="tree">
+      <span class="dir">council-out/protocol-guild/</span><br>
+      &#9500;&#9472;&#9472; <span class="dir">data/</span> <span class="desc">&larr; 8 files from Wave 1</span><br>
+      &#9474;&nbsp;&nbsp; &#9500;&#9472;&#9472; <span class="file">octant.json</span> <span class="desc">&mdash; Epoch 11 sole recipient, 194 donors, $258 ETH</span><br>
+      &#9474;&nbsp;&nbsp; &#9500;&#9472;&#9472; <span class="file">karma.json</span> <span class="desc">&mdash; No structured milestones (narrative reporting)</span><br>
+      &#9474;&nbsp;&nbsp; &#9500;&#9472;&#9472; <span class="file">social.json</span> <span class="desc">&mdash; 1778+ commits, 26 contributors, active social</span><br>
+      &#9474;&nbsp;&nbsp; &#9500;&#9472;&#9472; <span class="file">global.json</span> <span class="desc">&mdash; OSO bus factor 0.05, ecosystem impact 97</span><br>
+      &#9474;&nbsp;&nbsp; &#9500;&#9472;&#9472; <span class="file">github.md</span> <span class="desc">&mdash; 30+ teams, MIT license, frozen contracts by design</span><br>
+      &#9474;&nbsp;&nbsp; &#9500;&#9472;&#9472; <span class="file">web.md</span> <span class="desc">&mdash; ReadTheDocs, 2025 Annual Report, Agora governance</span><br>
+      &#9474;&nbsp;&nbsp; &#9500;&#9472;&#9472; <span class="file">onchain.md</span> <span class="desc">&mdash; 9-chain presence, immutable vesting contracts</span><br>
+      &#9474;&nbsp;&nbsp; &#9492;&#9472;&#9472; <span class="file">funding.md</span> <span class="desc">&mdash; $100M+ total, ether.fi $27.5M, Taiko $20.9M</span><br>
+      &#9500;&#9472;&#9472; <span class="dir">eval/</span> <span class="desc">&larr; 8 files from Wave 2 (independent)</span><br>
+      &#9474;&nbsp;&nbsp; &#9500;&#9472;&#9472; <span class="file">quant.json</span> <span class="desc">&mdash; Composite 86/100, ecosystem impact 97</span><br>
+      &#9474;&nbsp;&nbsp; &#9500;&#9472;&#9472; <span class="file">qual.json</span> <span class="desc">&mdash; "Structural trustlessness, proven donor legitimacy"</span><br>
+      &#9474;&nbsp;&nbsp; &#9500;&#9472;&#9472; <span class="file">ostrom-scores.json</span> <span class="desc">&mdash; Overall 74.5, Monitoring 90, Sanctions 38</span><br>
+      &#9474;&nbsp;&nbsp; &#9500;&#9472;&#9472; <span class="file">impact.md</span> <span class="desc">&mdash; 9/10, near-ideal public good</span><br>
+      &#9474;&nbsp;&nbsp; &#9500;&#9472;&#9472; <span class="file">technical.md</span> <span class="desc">&mdash; 7/10, strong docs but low coordination bus factor</span><br>
+      &#9474;&nbsp;&nbsp; &#9500;&#9472;&#9472; <span class="file">community.md</span> <span class="desc">&mdash; 9/10, 187 members, 832+ donors</span><br>
+      &#9474;&nbsp;&nbsp; &#9500;&#9472;&#9472; <span class="file">financial.md</span> <span class="desc">&mdash; 8/10, $57M vesting, top-2 donor concentration</span><br>
+      &#9474;&nbsp;&nbsp; &#9492;&#9472;&#9472; <span class="file">skeptic.md</span> <span class="desc">&mdash; 3/10 risk, clean on all categories</span><br>
+      &#9500;&#9472;&#9472; <span class="dir">synth/</span> <span class="desc">&larr; 2 files from Wave 3</span><br>
+      &#9474;&nbsp;&nbsp; &#9500;&#9472;&#9472; <span class="file">ostrom-report.md</span> <span class="desc">&mdash; SVG radar chart + 370-line governance breakdown</span><br>
+      &#9474;&nbsp;&nbsp; &#9492;&#9472;&#9472; <span class="file">eas-attestations.json</span> <span class="desc">&mdash; Ready for eas.attest() on Base</span><br>
+      &#9492;&#9472;&#9472; <span class="file">REPORT.md</span> <span class="desc">&larr; FUND &mdash; 8/10 &mdash; unconditional</span>
+    </div>
+  </section>
+
+  <!-- HOSTING -->
+  <section id="hosting">
+    <h2>Hosting &amp; Deployment</h2>
+
+    <p>The OptInPG extension includes a full production deployment stack. Here's the current status:</p>
+
+    <h3>Documentation Site</h3>
+    <div class="hosting-status ready">
+      <span class="dot"></span>
+      Live &mdash; GitHub Pages (free)
+    </div>
+    <p>This page you're reading is hosted on GitHub Pages at <code>rashmi-278.github.io/octant-council-builder</code>. Automatically deploys from the <code>docs/</code> folder on the <code>main</code> branch.</p>
+
+    <h3>Backend API (3 FastAPI Microservices)</h3>
+    <div class="hosting-status pending">
+      <span class="dot"></span>
+      Ready to deploy &mdash; Railway config included
+    </div>
+    <p>Three Python services mirror the three-wave pattern:</p>
+
+    <table>
+      <thead><tr><th>Service</th><th>Port</th><th>Wave</th><th>Key Endpoints</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><code>collector</code></td>
+          <td>:8001</td>
+          <td>Wave 1</td>
+          <td><code>POST /collect</code> &mdash; trigger data collection<br><code>GET /collect/{slug}</code> &mdash; retrieve all data files</td>
+        </tr>
+        <tr>
+          <td><code>analyst</code></td>
+          <td>:8002</td>
+          <td>Wave 2</td>
+          <td><code>POST /analyse</code> &mdash; trigger evaluation<br><code>GET /analyse/{slug}/ostrom</code> &mdash; Ostrom scores (for radar)</td>
+        </tr>
+        <tr>
+          <td><code>evaluator</code></td>
+          <td>:8003</td>
+          <td>Wave 3</td>
+          <td><code>GET /dashboard/{slug}</code> &mdash; aggregated dashboard data<br><code>GET /evaluate/{slug}/ostrom-radar</code> &mdash; radar chart data<br><code>GET /evaluate/{slug}/eas</code> &mdash; EAS attestation JSON</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p>All services include health checks, slug validation (regex <code>^[a-z0-9][a-z0-9-]{0,39}$</code> to prevent path traversal), and configurable CORS origins.</p>
+
+    <h4>Deploy to Railway</h4>
+    <pre><code><span class="comment"># Option 1: Use the skill (handles everything)</span>
+<span class="cmd">/council:deploy-to-production</span> <span class="string">protocol-guild</span>
+
+<span class="comment"># Option 2: Manual deploy with Railway CLI</span>
+<span class="cmd">cd</span> production/backend/evaluator
+<span class="cmd">railway up</span> --detach</code></pre>
+
+    <h3>Frontend Dashboard (Next.js 15)</h3>
+    <div class="hosting-status pending">
+      <span class="dot"></span>
+      Ready to deploy &mdash; Netlify config included
+    </div>
+    <p>Next.js 15 + React 19 + Tailwind CSS dashboard with:</p>
+    <ul style="margin: 8px 0 8px 20px; color: var(--text-muted); font-size: 14px;">
+      <li>Interactive Ostrom radar chart (custom SVG renderer, 8 axes)</li>
+      <li>Projects list with evaluation status</li>
+      <li>Per-project detail view: data &rarr; evals &rarr; synthesis &rarr; report</li>
+      <li>"Attest on Base" button (ethers.js + EAS SDK integration)</li>
+      <li>Markdown rendering for full reports</li>
+      <li>Octant-branded color scheme</li>
+    </ul>
+
+    <h4>Deploy to Netlify</h4>
+    <pre><code><span class="comment"># Static export (no server needed)</span>
+<span class="cmd">cd</span> production/frontend
+<span class="cmd">npm install</span> && <span class="cmd">npm run build</span>
+<span class="cmd">netlify deploy</span> --prod --dir=out
+
+<span class="comment"># Or use the deploy skill which handles both backend + frontend</span>
+<span class="cmd">/council:deploy-to-production</span> <span class="string">protocol-guild</span></code></pre>
+
+    <h3>Local Preview</h3>
+    <pre><code><span class="comment"># Run backend locally</span>
+<span class="cmd">cd</span> production/backend/evaluator
+<span class="cmd">pip install</span> -r requirements.txt
+<span class="cmd">uvicorn</span> main:app --port 8000
+
+<span class="comment"># Run frontend locally (in another terminal)</span>
+<span class="cmd">cd</span> production/frontend
+<span class="cmd">npm install</span> && <span class="cmd">npm run dev</span>
+<span class="comment"># Dashboard at http://localhost:3000</span></code></pre>
+
+    <h3>Test on 5 Octant Projects</h3>
+    <pre><code><span class="cmd">/council:test-octant</span>
+<span class="comment"># Runs full evaluation pipeline on:</span>
+<span class="comment"># Protocol Guild, L2BEAT, growthepie, Revoke.cash, Tor Project</span></code></pre>
+  </section>
+
+  <!-- PRODUCTION DEPLOY -->
+  <section id="production">
+    <h2>Production Architecture</h2>
+    <p>The deployment mirrors the three-wave agent pattern:</p>
+
+    <div class="wave-diagram">
+      <div class="wave-flow">
+        <div class="wave-box w1">
+          <div class="wave-label">Collector Service</div>
+          <h4>:8001</h4>
+          <p>POST /collect<br>GET /collect/{slug}<br>GET /projects</p>
+        </div>
+        <div class="wave-arrow">&rarr;</div>
+        <div class="wave-box w2">
+          <div class="wave-label">Analyst Service</div>
+          <h4>:8002</h4>
+          <p>POST /analyse<br>GET /analyse/{slug}/ostrom<br>GET /projects</p>
+        </div>
+        <div class="wave-arrow">&rarr;</div>
+        <div class="wave-box w3">
+          <div class="wave-label">Evaluator Service</div>
+          <h4>:8003</h4>
+          <p>GET /dashboard/{slug}<br>GET /evaluate/{slug}/eas<br>GET /ostrom-radar</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="card-grid">
+      <div class="card">
+        <h4>Railway (Backend)</h4>
+        <p>3 FastAPI services. NIXPACKS builder. Health checks at <code>/health</code>. Restart on failure (3 retries). Shared <code>COUNCIL_OUT_DIR</code>.</p>
+      </div>
+      <div class="card">
+        <h4>Netlify (Frontend)</h4>
+        <p>Next.js 15 static export. Node 20 LTS. API proxy redirects <code>/api/*</code> to Railway. Octant-branded dashboard.</p>
+      </div>
+      <div class="card">
+        <h4>Base Chain (Attestations)</h4>
+        <p>EAS contract at <code>0x4200...0021</code>. Schema registered once. Attestations per project per epoch. Human-signed only.</p>
+      </div>
+      <div class="card">
+        <h4>IPFS (Evidence)</h4>
+        <p>Full Ostrom reports pinned to IPFS. CID stored in attestation for permanent, verifiable evidence link.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================ -->
+  <!-- EXTENDED BY RASHMI-278                       -->
+  <!-- ============================================ -->
+
+  <section id="extended-by">
+    <h2>Extended by Rashmi-278</h2>
+
+    <div class="credit-banner">
+      <h3>OptInPG Extension</h3>
+      <a class="gh-link" href="https://github.com/Rashmi-278">github.com/Rashmi-278</a>
+      <p style="color: var(--text-muted); margin-top: 12px; font-size: 14px;">
+        Octant-native data collection, Elinor Ostrom governance scoring, EAS on-chain attestations, and full-stack production deployment &mdash; added to the Council Builder for the <strong>Octant Synthesis Hackathon</strong>.
+      </p>
+    </div>
+
+    <h3>What Was Added (Comprehensive)</h3>
+
+    <table>
+      <thead><tr><th>Category</th><th>Files</th><th>Details</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><strong>Octant Data Agents</strong></td>
+          <td>4 new agents</td>
+          <td><code>data-octant-scraper</code>, <code>data-karma</code>, <code>data-social-indexer</code>, <code>data-global-sources</code> &mdash; scrape octant.app, Karma GAP, GitHub/Farcaster/X, DefiLlama/OSO/L2Beat</td>
+        </tr>
+        <tr>
+          <td><strong>Evaluation Agents</strong></td>
+          <td>3 new agents</td>
+          <td><code>eval-quantitative</code> (5-dim 0-100), <code>eval-qualitative</code> (narrative with citations), <code>eval-ostrom</code> (8 principles 0-100 each with evidence)</td>
+        </tr>
+        <tr>
+          <td><strong>Synthesis Agents</strong></td>
+          <td>2 new agents</td>
+          <td><code>synth-ostrom-report</code> (SVG radar chart + governance breakdown), <code>synth-eas-attestation</code> (EAS SDK-compatible JSON for Base)</td>
+        </tr>
+        <tr>
+          <td><strong>Skills</strong></td>
+          <td>2 new skills</td>
+          <td><code>/council:deploy-to-production</code> (Railway + Netlify deployment), <code>/council:test-octant</code> (5-project end-to-end testing)</td>
+        </tr>
+        <tr>
+          <td><strong>Backend</strong></td>
+          <td>3 FastAPI services</td>
+          <td>Collector, Analyst, Evaluator &mdash; with health checks, slug validation, CORS handling, safe JSON parsing</td>
+        </tr>
+        <tr>
+          <td><strong>Frontend</strong></td>
+          <td>Next.js 15 dashboard</td>
+          <td>Ostrom radar charts, project list, detail views, EAS "Attest on Base" button, Octant branding</td>
+        </tr>
+        <tr>
+          <td><strong>Deploy Config</strong></td>
+          <td>3 config files + script</td>
+          <td><code>railway.json</code>, <code>netlify.toml</code>, <code>deploy.sh</code>, <code>.env.example</code></td>
+        </tr>
+        <tr>
+          <td><strong>Documentation</strong></td>
+          <td>PRD + Ostrom Rules + skill docs</td>
+          <td><code>PRD.md</code> (full spec), <code>Ostrom-Rules.md</code> (8 principles + digital translations), skill documentation</td>
+        </tr>
+        <tr>
+          <td><strong>Security Fixes</strong></td>
+          <td>Review hardening</td>
+          <td>Slug validation regex on all endpoints, CORS splitting fix, removed leaked local config, trailing newlines</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p style="margin-top: 16px;"><strong>Total: 49 new files, 4,705+ lines added, 0 lines modified in original plugin.</strong></p>
+  </section>
+
+  <!-- HACKATHON TRACKS -->
+  <section id="hackathon-tracks">
+    <h2>Octant Synthesis Hackathon Tracks</h2>
+    <p>The OptInPG extension was built to cover <strong>three hackathon tracks</strong> simultaneously:</p>
+
+    <div class="track-card track1">
+      <div class="track-label">Track 1 &mdash; Agentic Evaluation</div>
+      <h4>Multi-Agent Council for Public Goods Evaluation</h4>
+      <p>The core contribution. 19 AI agents organized in a three-wave pattern independently evaluate Octant public goods projects from 8 different angles.</p>
+      <ul>
+        <li><strong>Independent evaluation:</strong> Evaluators never see each other's scores &mdash; enforced architecturally, not by policy. This prevents groupthink and produces more honest assessments.</li>
+        <li><strong>8 evaluation lenses:</strong> Technical health, community strength, financial sustainability, public goods impact, governance (Ostrom), quantitative metrics, qualitative narrative, and skeptic/red-flag analysis</li>
+        <li><strong>Synthesis with dialogue:</strong> The chair agent can message evaluators during Wave 3 to challenge scores, ask for clarification, or request deeper analysis before writing the final report</li>
+        <li><strong>Octant-native data:</strong> 4 dedicated data agents scrape octant.app, Karma GAP, social platforms, and ecosystem data sources (DefiLlama, OSO, L2Beat, Dune)</li>
+        <li><strong>Recommendation framework:</strong> FUND / FUND WITH CONDITIONS / DON'T FUND / INSUFFICIENT DATA with clear composite score thresholds</li>
+        <li><strong>Real output:</strong> Protocol Guild evaluated at 8/10, unconditional FUND recommendation with detailed agreement/disagreement areas and key risks</li>
+      </ul>
+    </div>
+
+    <div class="track-card track2">
+      <div class="track-label">Track 2 &mdash; Governance Innovation</div>
+      <h4>Ostrom's 8 Design Principles for Digital Commons</h4>
+      <p>Applied Elinor Ostrom's Nobel Prize-winning commons governance framework to evaluate public goods projects &mdash; translating principles from physical commons (fisheries, forests) to digital commons (code, protocols, treasuries).</p>
+      <ul>
+        <li><strong>Full framework implementation:</strong> All 8 principles scored 0-100 with mandatory evidence, confidence levels, and identified gaps</li>
+        <li><strong>Digital translation:</strong> Each principle adapted to what it means for open source, DAOs, and public goods (e.g., "monitoring" &rarr; on-chain treasury dashboards and Karma GAP scores)</li>
+        <li><strong>Weighted scoring:</strong> Principles 1, 3, 4 weighted 1.25x (most critical for digital commons); Principle 5 weighted 0.75x (hardest to evidence early-stage)</li>
+        <li><strong>Governance maturity classification:</strong> Established (&ge;60) / Developing (40-59) / Nascent (20-39) / Absent (&lt;20)</li>
+        <li><strong>SVG radar chart:</strong> Embedded directly in markdown reports &mdash; 8-axis visualization showing governance strengths and weaknesses at a glance</li>
+        <li><strong>Real finding:</strong> Protocol Guild scored 74.5/100 "established" &mdash; strong on monitoring (90) and boundaries (88), weak on graduated sanctions (38) and conflict resolution (55). This is exactly the kind of insight traditional evaluation misses.</li>
+      </ul>
+    </div>
+
+    <div class="track-card track3">
+      <div class="track-label">Track 3 &mdash; On-Chain Accountability</div>
+      <h4>EAS Attestations on Base + Production Dashboard</h4>
+      <p>Every council evaluation can be permanently recorded on-chain via the Ethereum Attestation Service on Base, creating a verifiable, composable record of public goods evaluations.</p>
+      <ul>
+        <li><strong>EAS SDK-compatible JSON:</strong> Attestation schema with all 8 Ostrom scores, quantitative composite, governance maturity, IPFS evidence hash, epoch number</li>
+        <li><strong>Schema registered on Base:</strong> Single shared schema (Chain ID: 8453, EAS contract <code>0x4200...0021</code>) &mdash; composable, queryable by anyone</li>
+        <li><strong>IPFS evidence chain:</strong> Full Ostrom reports pinned to IPFS, CID stored in attestation for permanent, verifiable evidence link</li>
+        <li><strong>Human-signed only:</strong> Agents produce the JSON, humans sign and submit. Private keys never touched by the system</li>
+        <li><strong>Production dashboard:</strong> Next.js 15 frontend with Ostrom radar charts, "Attest on Base" button (ethers.js + EAS SDK), project detail views, shareable links</li>
+        <li><strong>3-service backend:</strong> FastAPI microservices on Railway (Collector, Analyst, Evaluator) with health checks, slug validation, CORS handling</li>
+        <li><strong>One-command deploy:</strong> <code>/council:deploy-to-production protocol-guild</code> handles Railway backend + Netlify frontend + data staging</li>
+      </ul>
+    </div>
+
+    <h3>Why These Three Tracks Fit Together</h3>
+    <p>The tracks aren't independent &mdash; they form a pipeline:</p>
+
+    <div class="wave-diagram">
+      <div class="wave-flow">
+        <div class="wave-box w1">
+          <div class="wave-label">Track 1</div>
+          <h4>Evaluate</h4>
+          <p>Multi-agent council independently evaluates the project</p>
+        </div>
+        <div class="wave-arrow">&rarr;</div>
+        <div class="wave-box w2">
+          <div class="wave-label">Track 2</div>
+          <h4>Govern</h4>
+          <p>Ostrom framework adds governance depth that raw metrics miss</p>
+        </div>
+        <div class="wave-arrow">&rarr;</div>
+        <div class="wave-box w3">
+          <div class="wave-label">Track 3</div>
+          <h4>Attest</h4>
+          <p>Results recorded on-chain as permanent, verifiable attestations</p>
+        </div>
+      </div>
+    </div>
+
+    <p>A project gets evaluated (Track 1), that evaluation includes governance depth via Ostrom (Track 2), and the results are permanently recorded on-chain (Track 3). Each track makes the others more valuable: attestations are only worth recording if the evaluation is rigorous, and the evaluation is only rigorous because it includes governance analysis most frameworks skip.</p>
+  </section>
+
   <!-- FOOTER -->
+  <footer>
+    <p>Octant Council Builder &mdash; a <a href="https://github.com/Rashmi-278/octant-council-builder">Claude Code plugin</a> for multi-agent evaluation councils</p>
+    <p style="margin-top: 8px;">Built for the <a href="https://synthesis.md/hack/#octant">Octant Synthesis Hackathon</a> | Powered by Claude Code Agent Teams</p>
+    <p style="margin-top: 8px;">OptInPG Extension by <a href="https://github.com/Rashmi-278">Rashmi-278</a> &mdash; Ostrom governance + EAS attestations + production deployment</p>
+  </footer>
   <footer>
     <p>Octant Council Builder &mdash; a <a href="https://github.com/SynthHack/octant-council-builder">Claude Code plugin</a> for multi-agent evaluation councils</p>
     <p style="margin-top: 8px;">Built for the <a href="https://synthesis.md/hack/#octant">Octant Hackathon</a> | Powered by Claude Code Agent Teams</p>
