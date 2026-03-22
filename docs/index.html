@@ -1,0 +1,1224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Octant Council Builder — Documentation</title>
+  <style>
+    :root {
+      --bg: #0f1117;
+      --surface: #1a1d27;
+      --surface-hover: #22263a;
+      --border: #2a2e3f;
+      --text: #e2e4e9;
+      --text-muted: #8b8fa3;
+      --accent: #6366f1;
+      --accent-light: #818cf8;
+      --green: #34d399;
+      --yellow: #fbbf24;
+      --red: #f87171;
+      --blue: #60a5fa;
+      --purple: #a78bfa;
+      --orange: #fb923c;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      font-size: 16px;
+    }
+
+    /* Navigation */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 260px;
+      height: 100vh;
+      background: var(--surface);
+      border-right: 1px solid var(--border);
+      padding: 24px 16px;
+      overflow-y: auto;
+      z-index: 100;
+    }
+    nav .logo {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--accent-light);
+      margin-bottom: 8px;
+    }
+    nav .subtitle {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-bottom: 24px;
+    }
+    nav a {
+      display: block;
+      color: var(--text-muted);
+      text-decoration: none;
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 14px;
+      margin-bottom: 2px;
+      transition: all 0.15s;
+    }
+    nav a:hover { color: var(--text); background: var(--surface-hover); }
+    nav a.active { color: var(--accent-light); background: var(--surface-hover); }
+    nav .section-label {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+      margin: 16px 0 6px 12px;
+    }
+
+    /* Main content */
+    main {
+      margin-left: 260px;
+      max-width: 900px;
+      padding: 48px 48px 120px;
+    }
+
+    /* Hero */
+    .hero {
+      text-align: center;
+      padding: 64px 0 48px;
+    }
+    .hero h1 {
+      font-size: 42px;
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--accent-light), var(--purple));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 16px;
+    }
+    .hero p {
+      font-size: 20px;
+      color: var(--text-muted);
+      max-width: 600px;
+      margin: 0 auto 32px;
+    }
+    .badge-row {
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .badge {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+    }
+    .badge.agents { border-color: var(--accent); color: var(--accent-light); }
+    .badge.waves { border-color: var(--green); color: var(--green); }
+    .badge.ostrom { border-color: var(--purple); color: var(--purple); }
+
+    /* Sections */
+    section { margin-bottom: 56px; }
+    h2 {
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 16px;
+      padding-top: 24px;
+    }
+    h3 {
+      font-size: 20px;
+      font-weight: 600;
+      margin: 24px 0 12px;
+      color: var(--accent-light);
+    }
+    h4 {
+      font-size: 16px;
+      font-weight: 600;
+      margin: 16px 0 8px;
+    }
+    p { margin-bottom: 12px; }
+
+    /* Cards */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 16px;
+      margin: 16px 0;
+    }
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+      transition: border-color 0.2s;
+    }
+    .card:hover { border-color: var(--accent); }
+    .card .card-icon {
+      font-size: 28px;
+      margin-bottom: 8px;
+    }
+    .card h4 { margin-top: 0; }
+    .card p { color: var(--text-muted); font-size: 14px; }
+
+    /* Wave diagram */
+    .wave-diagram {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 32px;
+      margin: 24px 0;
+      overflow-x: auto;
+    }
+    .wave-flow {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      min-width: 700px;
+    }
+    .wave-box {
+      flex: 1;
+      background: var(--bg);
+      border: 2px solid var(--border);
+      border-radius: 10px;
+      padding: 20px;
+      text-align: center;
+    }
+    .wave-box.w1 { border-color: var(--blue); }
+    .wave-box.w2 { border-color: var(--purple); }
+    .wave-box.w3 { border-color: var(--green); }
+    .wave-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .wave-box.w1 .wave-label { color: var(--blue); }
+    .wave-box.w2 .wave-label { color: var(--purple); }
+    .wave-box.w3 .wave-label { color: var(--green); }
+    .wave-box h4 { color: var(--text); margin: 4px 0; }
+    .wave-box p { font-size: 13px; color: var(--text-muted); margin: 0; }
+    .wave-arrow {
+      font-size: 24px;
+      color: var(--text-muted);
+      flex-shrink: 0;
+    }
+
+    /* Code blocks */
+    pre {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px 20px;
+      overflow-x: auto;
+      font-size: 14px;
+      line-height: 1.6;
+      margin: 12px 0;
+    }
+    code {
+      font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', monospace;
+      font-size: 0.9em;
+    }
+    :not(pre) > code {
+      background: var(--surface);
+      padding: 2px 6px;
+      border-radius: 4px;
+      border: 1px solid var(--border);
+    }
+    .cmd { color: var(--green); }
+    .comment { color: var(--text-muted); }
+    .string { color: var(--yellow); }
+
+    /* Tables */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0;
+      font-size: 14px;
+    }
+    th, td {
+      padding: 10px 14px;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+    th {
+      background: var(--surface);
+      font-weight: 600;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+    }
+    td { color: var(--text); }
+    tr:hover td { background: var(--surface); }
+
+    /* Agent list */
+    .agent-group { margin: 16px 0; }
+    .agent-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 12px 16px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      margin-bottom: 8px;
+    }
+    .agent-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      margin-top: 6px;
+      flex-shrink: 0;
+    }
+    .agent-dot.data { background: var(--blue); }
+    .agent-dot.eval { background: var(--purple); }
+    .agent-dot.synth { background: var(--green); }
+    .agent-name { font-weight: 600; font-size: 14px; }
+    .agent-desc { font-size: 13px; color: var(--text-muted); }
+
+    /* Output tree */
+    .tree {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 20px 24px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      line-height: 1.8;
+      margin: 16px 0;
+    }
+    .tree .dir { color: var(--blue); font-weight: 600; }
+    .tree .file { color: var(--text); }
+    .tree .desc { color: var(--text-muted); }
+
+    /* Score card */
+    .score-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px;
+      margin: 16px 0;
+    }
+    .score-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+    .score-project { font-size: 20px; font-weight: 700; }
+    .score-verdict {
+      padding: 6px 16px;
+      border-radius: 20px;
+      font-weight: 700;
+      font-size: 14px;
+    }
+    .score-verdict.fund { background: rgba(52, 211, 153, 0.15); color: var(--green); }
+    .score-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 14px;
+    }
+    .score-row:last-child { border-bottom: none; }
+    .score-bar-bg {
+      width: 120px;
+      height: 6px;
+      background: var(--bg);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+    .score-bar {
+      height: 100%;
+      border-radius: 3px;
+      transition: width 0.5s;
+    }
+    .score-val { font-weight: 600; width: 40px; text-align: right; }
+
+    /* Callout */
+    .callout {
+      background: rgba(99, 102, 241, 0.08);
+      border-left: 3px solid var(--accent);
+      border-radius: 0 8px 8px 0;
+      padding: 16px 20px;
+      margin: 16px 0;
+      font-size: 14px;
+    }
+    .callout.warning {
+      background: rgba(251, 191, 36, 0.08);
+      border-color: var(--yellow);
+    }
+    .callout.success {
+      background: rgba(52, 211, 153, 0.08);
+      border-color: var(--green);
+    }
+
+    /* Ostrom chart mock */
+    .ostrom-chart {
+      text-align: center;
+      padding: 24px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      margin: 16px 0;
+    }
+    .ostrom-chart svg { max-width: 400px; }
+
+    /* JSON preview */
+    .json-preview {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 20px;
+      margin: 16px 0;
+      max-height: 400px;
+      overflow-y: auto;
+    }
+    .json-key { color: var(--accent-light); }
+    .json-string { color: var(--green); }
+    .json-number { color: var(--yellow); }
+
+    /* Step list */
+    .steps { counter-reset: step; margin: 16px 0; }
+    .step {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+    .step-num {
+      counter-increment: step;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 14px;
+      flex-shrink: 0;
+    }
+    .step-content { flex: 1; }
+    .step-content h4 { margin-top: 4px; }
+
+    /* Footer */
+    footer {
+      margin-top: 64px;
+      padding: 32px 0;
+      border-top: 1px solid var(--border);
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 13px;
+    }
+    footer a { color: var(--accent-light); text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+
+    /* Mobile */
+    @media (max-width: 768px) {
+      nav { display: none; }
+      main { margin-left: 0; padding: 24px 20px 80px; }
+      .hero h1 { font-size: 28px; }
+      .hero p { font-size: 16px; }
+      .wave-flow { flex-direction: column; min-width: auto; }
+      .wave-arrow { transform: rotate(90deg); }
+      .card-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Side Navigation -->
+<nav>
+  <div class="logo">Council Builder</div>
+  <div class="subtitle">Multi-Agent Evaluation Framework</div>
+
+  <div class="section-label">Overview</div>
+  <a href="#what-is-it">What Is It?</a>
+  <a href="#how-it-works">How It Works</a>
+  <a href="#three-waves">Three-Wave Pattern</a>
+
+  <div class="section-label">Getting Started</div>
+  <a href="#quickstart">Quickstart</a>
+  <a href="#commands">Commands</a>
+  <a href="#make-it-yours">Make It Yours</a>
+
+  <div class="section-label">Agents</div>
+  <a href="#data-agents">Data Agents (Wave 1)</a>
+  <a href="#eval-agents">Eval Agents (Wave 2)</a>
+  <a href="#synth-agents">Synth Agents (Wave 3)</a>
+
+  <div class="section-label">Output &amp; Artifacts</div>
+  <a href="#output-structure">Output Structure</a>
+  <a href="#example-report">Example: Protocol Guild</a>
+  <a href="#ostrom-scoring">Ostrom Scoring</a>
+  <a href="#eas-attestations">EAS Attestations</a>
+
+  <div class="section-label">Advanced</div>
+  <a href="#architecture">Architecture</a>
+  <a href="#extending">Extending</a>
+  <a href="#production">Production Deploy</a>
+</nav>
+
+<!-- Main Content -->
+<main>
+
+  <!-- HERO -->
+  <div class="hero" id="what-is-it">
+    <h1>Octant Council Builder</h1>
+    <p>A Claude Code plugin that builds multi-agent evaluation councils. Design your council through conversation, then run it on any project.</p>
+    <div class="badge-row">
+      <span class="badge agents">19 Agents</span>
+      <span class="badge waves">3-Wave Execution</span>
+      <span class="badge ostrom">Ostrom Governance Scoring</span>
+      <span class="badge">EAS Attestations</span>
+      <span class="badge">Claude Code Plugin</span>
+    </div>
+  </div>
+
+  <!-- WHAT IS IT -->
+  <section>
+    <h2>What Is This?</h2>
+    <p>Council Builder is a <strong>factory for evaluation councils</strong> &mdash; not a council itself. It generates teams of AI agents that independently evaluate projects from different angles (technical health, community strength, financial sustainability, governance, etc.) and then synthesize those independent evaluations into a single report with a funding recommendation.</p>
+
+    <p>It ships with default agents designed for <strong>Octant/Ethereum public goods</strong> evaluation, but these are scaffolding. The whole point is that you run <code>/council:setup</code> and reshape it into whatever you need: DeFi protocol reviews, grant applications, climate DAO evaluations, developer tooling assessments, or anything else.</p>
+
+    <div class="callout">
+      <strong>Key insight:</strong> Evaluators never see each other's scores. This independence is enforced architecturally &mdash; each agent runs in isolation, reads only raw data, and writes its scores to a separate file. The synthesis agent reads everything at the end. This prevents groupthink and produces more honest evaluations.
+    </div>
+  </section>
+
+  <!-- THREE WAVES -->
+  <section id="how-it-works">
+    <h2 id="three-waves">The Three-Wave Pattern</h2>
+    <p>Every council evaluation runs in three sequential waves. Within each wave, agents run in parallel.</p>
+
+    <div class="wave-diagram">
+      <div class="wave-flow">
+        <div class="wave-box w1">
+          <div class="wave-label">Wave 1 &mdash; Data</div>
+          <h4>Gather</h4>
+          <p>8 data agents scrape external sources in parallel: GitHub, on-chain data, funding history, social media, Karma scores, etc.</p>
+        </div>
+        <div class="wave-arrow">&rarr;</div>
+        <div class="wave-box w2">
+          <div class="wave-label">Wave 2 &mdash; Evaluate</div>
+          <h4>Score</h4>
+          <p>8 evaluators independently score the project on 5 dimensions each. They read Wave 1 data but never see each other's scores.</p>
+        </div>
+        <div class="wave-arrow">&rarr;</div>
+        <div class="wave-box w3">
+          <div class="wave-label">Wave 3 &mdash; Synthesize</div>
+          <h4>Decide</h4>
+          <p>Synthesis agents read all evaluations, can ask evaluators clarifying questions, and produce the final report with a recommendation.</p>
+        </div>
+      </div>
+    </div>
+
+    <h3>Wave Gates</h3>
+    <p>Each wave must fully complete before the next begins. The orchestrator polls task status until all agents in a wave report completion. This ensures:</p>
+    <ul style="margin: 8px 0 8px 20px; color: var(--text-muted);">
+      <li>Wave 2 evaluators have complete data to work with</li>
+      <li>Wave 3 synthesizers have all scores before writing the report</li>
+      <li>No agent reads partial or in-progress output</li>
+    </ul>
+  </section>
+
+  <!-- QUICKSTART -->
+  <section id="quickstart">
+    <h2>Quickstart</h2>
+    <p>Three steps to your first evaluation:</p>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <h4>Install Settings (one time)</h4>
+          <p>This enables Claude teams (needed for inter-agent communication) and creates a shell alias.</p>
+          <pre><code><span class="cmd">/council:settings</span></code></pre>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <h4>Run an Evaluation</h4>
+          <p>Try the default scaffold on a real project to see the pattern in action.</p>
+          <pre><code><span class="cmd">/council:evaluate</span> <span class="string">Protocol Guild</span></code></pre>
+          <p style="font-size: 14px; color: var(--text-muted);">This spawns 19 agents across 3 waves and produces a full evaluation report in <code>council-out/protocol-guild/</code>.</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <h4>Make It Yours</h4>
+          <p>Redesign the council for your domain.</p>
+          <pre><code><span class="cmd">/council:setup</span> <span class="string">DeFi lending protocols</span>
+<span class="cmd">/council:setup</span> <span class="string">climate impact DAOs</span>
+<span class="cmd">/council:setup</span> <span class="string">developer tooling grants</span></code></pre>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- COMMANDS -->
+  <section id="commands">
+    <h2>Commands</h2>
+    <table>
+      <thead>
+        <tr><th>Command</th><th>What It Does</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><code>/council:settings</code></td><td>One-time setup: enables Claude teams, creates shell alias, sets permissions</td></tr>
+        <tr><td><code>/council:setup [domain]</code></td><td>Design your council through conversation. Researches domain, proposes agent roster, generates all agent definitions</td></tr>
+        <tr><td><code>/council:evaluate &lt;project&gt;</code></td><td>Run the full 3-wave evaluation on a project. Produces report in <code>council-out/</code></td></tr>
+        <tr><td><code>/council:add-agent</code></td><td>Add a single new agent via guided conversation, domain research, and generation</td></tr>
+        <tr><td><code>/council:remove-agent</code></td><td>Remove an agent with impact preview showing what will be affected</td></tr>
+        <tr><td><code>/council:deploy-to-production</code></td><td>Export council output to Railway backend + Netlify dashboard (OptInPG extension)</td></tr>
+        <tr><td><code>/council:test-octant</code></td><td>Run evaluation on 5 test Octant projects to verify everything works end-to-end</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- MAKE IT YOURS -->
+  <section id="make-it-yours">
+    <h2>Make It Yours</h2>
+    <p>Everything is customizable. The plugin is a council <em>factory</em>, not a finished council.</p>
+
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-icon">&#127981;</div>
+        <h4>Redesign the Whole Council</h4>
+        <p>Run <code>/council:setup</code> with a new domain. It'll design new agents, research the domain, and generate everything from scratch.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">&#10133;</div>
+        <h4>Add or Remove Agents</h4>
+        <p>Use <code>/council:add-agent</code> and <code>/council:remove-agent</code> to tune which lenses are applied during evaluation.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">&#9998;</div>
+        <h4>Edit Agents Directly</h4>
+        <p>Every agent is a markdown file in <code>agents/</code>. Change scoring dimensions, data sources, calibration tables. No config to update.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">&#128196;</div>
+        <h4>Change the Output Format</h4>
+        <p>Modify agent output templates to produce JSON, comparison matrices, grant proposals, or whatever artifact your use case needs.</p>
+      </div>
+    </div>
+
+    <h3>Domain Ideas</h3>
+    <table>
+      <thead>
+        <tr><th>Domain</th><th>Agents to Swap/Add</th><th>Why</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>DeFi Protocols</td><td><code>data-audits</code>, <code>eval-security</code></td><td>Security and audit trail matter most</td></tr>
+        <tr><td>L2 Rollups</td><td><code>data-l2beat</code>, <code>eval-decentralization</code></td><td>L2Beat has the data</td></tr>
+        <tr><td>Grant Programs</td><td><code>data-milestones</code>, <code>eval-delivery</code></td><td>Track record of shipping</td></tr>
+        <tr><td>Research Projects</td><td><code>data-papers</code>, <code>eval-novelty</code></td><td>Academic rigor matters</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- DATA AGENTS -->
+  <section id="data-agents">
+    <h2>Data Agents (Wave 1)</h2>
+    <p>These agents gather raw information from external sources. They run in parallel and write structured JSON or markdown to <code>council-out/{slug}/data/</code>.</p>
+
+    <div class="agent-group">
+      <div class="agent-item">
+        <div class="agent-dot data"></div>
+        <div>
+          <div class="agent-name">data-octant-scraper</div>
+          <div class="agent-desc">Scrapes octant.app for project data: name, address, description, epoch participation, funding received, donor count, category. Output: <code>octant.json</code></div>
+        </div>
+      </div>
+      <div class="agent-item">
+        <div class="agent-dot data"></div>
+        <div>
+          <div class="agent-name">data-karma</div>
+          <div class="agent-desc">Pulls Karma GAP (Grantee Accountability Protocol) scores: completion ratio, milestones delivered, grants history, reputation. Output: <code>karma.json</code></div>
+        </div>
+      </div>
+      <div class="agent-item">
+        <div class="agent-dot data"></div>
+        <div>
+          <div class="agent-name">data-social-indexer</div>
+          <div class="agent-desc">Indexes GitHub activity, Farcaster casts, and X posts within a 7-day window. Measures current engagement and development pace. Output: <code>social.json</code></div>
+        </div>
+      </div>
+      <div class="agent-item">
+        <div class="agent-dot data"></div>
+        <div>
+          <div class="agent-name">data-global-sources</div>
+          <div class="agent-desc">Aggregates data from DefiLlama, Open Source Observer, L2Beat, Dune Analytics, and Electric Capital. Requires 3+ external sources. Output: <code>global.json</code></div>
+        </div>
+      </div>
+      <div class="agent-item">
+        <div class="agent-dot data"></div>
+        <div>
+          <div class="agent-name">data-github</div>
+          <div class="agent-desc">GitHub repo metrics: stars, forks, contributors, issues, PRs, last commit date, bus factor, maintenance status. Output: <code>github.md</code></div>
+        </div>
+      </div>
+      <div class="agent-item">
+        <div class="agent-dot data"></div>
+        <div>
+          <div class="agent-name">data-web</div>
+          <div class="agent-desc">Website, documentation, blog, and social media presence. Assesses mission clarity, team visibility, documentation quality. Output: <code>web.md</code></div>
+        </div>
+      </div>
+      <div class="agent-item">
+        <div class="agent-dot data"></div>
+        <div>
+          <div class="agent-name">data-onchain</div>
+          <div class="agent-desc">On-chain activity: contract deployments, TVL, usage metrics, developer activity across chains. Valid if empty (not all projects are on-chain). Output: <code>onchain.md</code></div>
+        </div>
+      </div>
+      <div class="agent-item">
+        <div class="agent-dot data"></div>
+        <div>
+          <div class="agent-name">data-funding</div>
+          <div class="agent-desc">Funding history from Gitcoin, RetroPGF, Octant, Giveth, ESP. Tracks diversity, concentration, and funding trend. Output: <code>funding.md</code></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EVAL AGENTS -->
+  <section id="eval-agents">
+    <h2>Eval Agents (Wave 2)</h2>
+    <p>Independent evaluators that each score the project on 5 dimensions (1&ndash;10 scale). They read all Wave 1 data but <strong>never see each other's scores</strong>.</p>
+
+    <div class="agent-group">
+      <div class="agent-item">
+        <div class="agent-dot eval"></div>
+        <div>
+          <div class="agent-name">eval-quantitative</div>
+          <div class="agent-desc">Numeric scoring across 5 weighted dimensions: Activity (25%), Funding Efficiency (20%), Ecosystem Impact (25%), Growth Trajectory (15%), Transparency (15%). Produces composite 0&ndash;100 score. Output: <code>quant.json</code></div>
+        </div>
+      </div>
+      <div class="agent-item">
+        <div class="agent-dot eval"></div>
+        <div>
+          <div class="agent-name">eval-qualitative</div>
+          <div class="agent-desc">Narrative assessment (150&ndash;300 words) with cited evidence. Identifies 2&ndash;4 strengths and 1&ndash;3 concerns with specific data points. Output: <code>qual.json</code></div>
+        </div>
+      </div>
+      <div class="agent-item">
+        <div class="agent-dot eval"></div>
+        <div>
+          <div class="agent-name">eval-ostrom</div>
+          <div class="agent-desc">Scores the project against Elinor Ostrom's 8 Design Principles for managing commons. Each principle scored 0&ndash;100 with evidence and gaps. Output: <code>ostrom-scores.json</code></div>
+        </div>
+      </div>
+      <div class="agent-item">
+        <div class="agent-dot eval"></div>
+        <div>
+          <div class="agent-name">eval-impact</div>
+          <div class="agent-desc">Public goods lens: non-rivalrous, non-excludable, positive externalities, counterfactual impact, breadth of impact. Key question: "If we don't fund this, what happens?" Output: <code>impact.md</code></div>
+        </div>
+      </div>
+      <div class="agent-item">
+        <div class="agent-dot eval"></div>
+        <div>
+          <div class="agent-name">eval-technical</div>
+          <div class="agent-desc">Technical health: active development, code quality, contributor health (bus factor), documentation, technical ambition. Output: <code>technical.md</code></div>
+        </div>
+      </div>
+      <div class="agent-item">
+        <div class="agent-dot eval"></div>
+        <div>
+          <div class="agent-name">eval-community</div>
+          <div class="agent-desc">Community assessment: user adoption, contributor community, governance, communication, ecosystem integration. Key question: "If this shut down tomorrow, who would notice?" Output: <code>community.md</code></div>
+        </div>
+      </div>
+      <div class="agent-item">
+        <div class="agent-dot eval"></div>
+        <div>
+          <div class="agent-name">eval-financial</div>
+          <div class="agent-desc">Financial sustainability: funding diversity, sustainability model, efficiency (output vs. funding), transparency, runway. Flags over/under-funding and concentration risk. Output: <code>financial.md</code></div>
+        </div>
+      </div>
+      <div class="agent-item">
+        <div class="agent-dot eval"></div>
+        <div>
+          <div class="agent-name">eval-skeptic</div>
+          <div class="agent-desc">Devil's advocate. Six red flag categories: sybil/gaming risk, funding capture, overpromising, conflicts of interest, better alternatives, sustainability theater. Won't fabricate flags. Output: <code>skeptic.md</code></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SYNTH AGENTS -->
+  <section id="synth-agents">
+    <h2>Synth Agents (Wave 3)</h2>
+    <p>Synthesis agents read all Wave 2 outputs and can talk back to evaluators via team messaging to ask clarifying questions before writing the final report.</p>
+
+    <div class="agent-group">
+      <div class="agent-item">
+        <div class="agent-dot synth"></div>
+        <div>
+          <div class="agent-name">synth-chair</div>
+          <div class="agent-desc">Produces the final <code>REPORT.md</code> with recommendation (FUND / FUND WITH CONDITIONS / DON'T FUND / INSUFFICIENT DATA), composite score, score card, executive summary, areas of agreement and disagreement, key risks, and conditions.</div>
+        </div>
+      </div>
+      <div class="agent-item">
+        <div class="agent-dot synth"></div>
+        <div>
+          <div class="agent-name">synth-ostrom-report</div>
+          <div class="agent-desc">Generates an Ostrom-specific report with embedded SVG radar chart (8 axes), principle-by-principle assessment, combined evaluation, and governance recommendations. Output: <code>ostrom-report.md</code></div>
+        </div>
+      </div>
+      <div class="agent-item">
+        <div class="agent-dot synth"></div>
+        <div>
+          <div class="agent-name">synth-eas-attestation</div>
+          <div class="agent-desc">Produces EAS SDK-compatible attestation JSON ready for <code>eas.attest()</code> on Base (Chain ID: 8453). Includes all 8 Ostrom scores, quantitative composite, governance maturity, and IPFS evidence hash. Output: <code>eas-attestations.json</code></div>
+        </div>
+      </div>
+    </div>
+
+    <h3>Synthesis Approaches</h3>
+    <table>
+      <thead><tr><th>Approach</th><th>Agents Used</th><th>How It Works</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Single Chair</strong> (default)</td><td><code>synth-chair</code></td><td>Reads all evals, produces a unified report with one recommendation</td></tr>
+        <tr><td><strong>Debate</strong></td><td><code>synth-bull</code> + <code>synth-bear</code> + <code>synth-chair</code></td><td>Bull argues FOR, bear argues AGAINST, chair makes final decision</td></tr>
+        <tr><td><strong>Ranked</strong></td><td><code>synth-ranker</code></td><td>Compares the project against known alternatives</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- OUTPUT STRUCTURE -->
+  <section id="output-structure">
+    <h2>Output Structure</h2>
+    <p>Every evaluation produces a structured directory in <code>council-out/</code>. The slug is derived from the project name (lowercase, hyphens, max 40 chars).</p>
+
+    <div class="tree">
+      <span class="dir">council-out/{slug}/</span><br>
+      &#9500;&#9472;&#9472; <span class="dir">data/</span> <span class="desc">&larr; Wave 1 output</span><br>
+      &#9474;&nbsp;&nbsp; &#9500;&#9472;&#9472; <span class="file">octant.json</span> <span class="desc">&mdash; Octant project data</span><br>
+      &#9474;&nbsp;&nbsp; &#9500;&#9472;&#9472; <span class="file">karma.json</span> <span class="desc">&mdash; Karma GAP scores</span><br>
+      &#9474;&nbsp;&nbsp; &#9500;&#9472;&#9472; <span class="file">social.json</span> <span class="desc">&mdash; GitHub/Farcaster/X activity</span><br>
+      &#9474;&nbsp;&nbsp; &#9500;&#9472;&#9472; <span class="file">global.json</span> <span class="desc">&mdash; DefiLlama, OSO, L2Beat, Dune</span><br>
+      &#9474;&nbsp;&nbsp; &#9500;&#9472;&#9472; <span class="file">github.md</span> <span class="desc">&mdash; GitHub repo metrics</span><br>
+      &#9474;&nbsp;&nbsp; &#9500;&#9472;&#9472; <span class="file">web.md</span> <span class="desc">&mdash; Website/docs assessment</span><br>
+      &#9474;&nbsp;&nbsp; &#9500;&#9472;&#9472; <span class="file">onchain.md</span> <span class="desc">&mdash; On-chain activity</span><br>
+      &#9474;&nbsp;&nbsp; &#9492;&#9472;&#9472; <span class="file">funding.md</span> <span class="desc">&mdash; Funding history</span><br>
+      &#9500;&#9472;&#9472; <span class="dir">eval/</span> <span class="desc">&larr; Wave 2 output</span><br>
+      &#9474;&nbsp;&nbsp; &#9500;&#9472;&#9472; <span class="file">quant.json</span> <span class="desc">&mdash; Quantitative scores (5 dim &times; 0-100)</span><br>
+      &#9474;&nbsp;&nbsp; &#9500;&#9472;&#9472; <span class="file">qual.json</span> <span class="desc">&mdash; Qualitative narrative</span><br>
+      &#9474;&nbsp;&nbsp; &#9500;&#9472;&#9472; <span class="file">ostrom-scores.json</span> <span class="desc">&mdash; Ostrom 8 principles (0-100 each)</span><br>
+      &#9474;&nbsp;&nbsp; &#9500;&#9472;&#9472; <span class="file">impact.md</span> <span class="desc">&mdash; Public goods impact</span><br>
+      &#9474;&nbsp;&nbsp; &#9500;&#9472;&#9472; <span class="file">technical.md</span> <span class="desc">&mdash; Technical health</span><br>
+      &#9474;&nbsp;&nbsp; &#9500;&#9472;&#9472; <span class="file">community.md</span> <span class="desc">&mdash; Community assessment</span><br>
+      &#9474;&nbsp;&nbsp; &#9500;&#9472;&#9472; <span class="file">financial.md</span> <span class="desc">&mdash; Financial sustainability</span><br>
+      &#9474;&nbsp;&nbsp; &#9492;&#9472;&#9472; <span class="file">skeptic.md</span> <span class="desc">&mdash; Red flags &amp; risk assessment</span><br>
+      &#9500;&#9472;&#9472; <span class="dir">synth/</span> <span class="desc">&larr; Wave 3 output</span><br>
+      &#9474;&nbsp;&nbsp; &#9500;&#9472;&#9472; <span class="file">ostrom-report.md</span> <span class="desc">&mdash; Ostrom radar chart + breakdown</span><br>
+      &#9474;&nbsp;&nbsp; &#9492;&#9472;&#9472; <span class="file">eas-attestations.json</span> <span class="desc">&mdash; EAS SDK JSON for on-chain attest</span><br>
+      &#9492;&#9472;&#9472; <span class="file">REPORT.md</span> <span class="desc">&larr; Final council verdict</span>
+    </div>
+  </section>
+
+  <!-- EXAMPLE REPORT -->
+  <section id="example-report">
+    <h2>Example: Protocol Guild Evaluation</h2>
+    <p>Here's a real evaluation output from the default scaffold council running on Protocol Guild.</p>
+
+    <div class="score-card">
+      <div class="score-header">
+        <span class="score-project">Protocol Guild</span>
+        <span class="score-verdict fund">FUND &mdash; 8/10</span>
+      </div>
+
+      <div class="score-row">
+        <span>Technical</span>
+        <div class="score-bar-bg"><div class="score-bar" style="width:70%; background: var(--blue);"></div></div>
+        <span class="score-val">7/10</span>
+      </div>
+      <div class="score-row">
+        <span>Community</span>
+        <div class="score-bar-bg"><div class="score-bar" style="width:90%; background: var(--purple);"></div></div>
+        <span class="score-val">9/10</span>
+      </div>
+      <div class="score-row">
+        <span>Financial</span>
+        <div class="score-bar-bg"><div class="score-bar" style="width:80%; background: var(--green);"></div></div>
+        <span class="score-val">8/10</span>
+      </div>
+      <div class="score-row">
+        <span>Impact</span>
+        <div class="score-bar-bg"><div class="score-bar" style="width:90%; background: var(--accent-light);"></div></div>
+        <span class="score-val">9/10</span>
+      </div>
+      <div class="score-row">
+        <span>Skeptic (risk)</span>
+        <div class="score-bar-bg"><div class="score-bar" style="width:30%; background: var(--green);"></div></div>
+        <span class="score-val">3/10</span>
+      </div>
+      <div class="score-row">
+        <span>Ostrom Governance</span>
+        <div class="score-bar-bg"><div class="score-bar" style="width:70%; background: var(--orange);"></div></div>
+        <span class="score-val">7/10</span>
+      </div>
+      <div class="score-row">
+        <span>Quantitative</span>
+        <div class="score-bar-bg"><div class="score-bar" style="width:90%; background: var(--yellow);"></div></div>
+        <span class="score-val">9/10</span>
+      </div>
+      <div class="score-row">
+        <span>Qualitative</span>
+        <div class="score-bar-bg"><div class="score-bar" style="width:80%; background: var(--red);"></div></div>
+        <span class="score-val">8/10</span>
+      </div>
+    </div>
+
+    <h3>Executive Summary</h3>
+    <div class="callout success">
+      Protocol Guild is the only mechanism purpose-built to systematically fund Ethereum's layer 1 core protocol maintainers across all major client teams. Its 187&ndash;190 members maintain every major execution and consensus client. With $100M+ in cumulative donations, an immutable 4-year vesting contract, and full on-chain transparency, it represents best-in-class public goods infrastructure. All eight evaluators independently concluded that Protocol Guild is a high-impact, well-governed, and transparently operated project. <strong>The council recommends funding without conditions.</strong>
+    </div>
+
+    <h3>Key Risk Identified</h3>
+    <div class="callout warning">
+      <strong>Funding concentration in token-denominated pledges.</strong> Ether.fi ($27.5M) and Taiko ($20.9M) together represent ~66% of total donations by value. These are token-denominated and subject to significant price volatility. A sustained bear market could reduce the $57M vesting pipeline by 50&ndash;80%.
+    </div>
+
+    <h3>Recommendation Criteria</h3>
+    <table>
+      <thead><tr><th>Verdict</th><th>Criteria</th></tr></thead>
+      <tbody>
+        <tr><td style="color: var(--green); font-weight: 600;">FUND</td><td>Composite &ge; 7, no critical red flags, clear public good</td></tr>
+        <tr><td style="color: var(--yellow); font-weight: 600;">FUND WITH CONDITIONS</td><td>Composite 5&ndash;7, or addressable red flags present</td></tr>
+        <tr><td style="color: var(--red); font-weight: 600;">DON'T FUND</td><td>Composite &lt; 5, critical red flags, or not a genuine public good</td></tr>
+        <tr><td style="color: var(--text-muted); font-weight: 600;">INSUFFICIENT DATA</td><td>Can't find enough information to make a responsible recommendation</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- OSTROM SCORING -->
+  <section id="ostrom-scoring">
+    <h2>Ostrom Governance Scoring</h2>
+    <p>One of the most unique features of the council is its evaluation of projects against <strong>Elinor Ostrom's 8 Design Principles</strong> for managing commons &mdash; translated from physical commons (fisheries, forests) to digital public goods (code, protocols, data, treasuries).</p>
+
+    <h3>The 8 Principles</h3>
+    <table>
+      <thead><tr><th>#</th><th>Principle</th><th>What It Means for Digital Public Goods</th><th style="text-align:right">Weight</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td><strong>Clearly Defined Boundaries</strong></td><td>Who uses/contributes? What's the scope? (LICENSE, CONTRIBUTING.md, membership criteria)</td><td style="text-align:right">1.25x</td></tr>
+        <tr><td>2</td><td><strong>Congruence with Local Conditions</strong></td><td>Are rules custom-built for this domain, or generic DAO templates?</td><td style="text-align:right">1.0x</td></tr>
+        <tr><td>3</td><td><strong>Collective-Choice Arrangements</strong></td><td>Can affected stakeholders change the rules? (Snapshot, governance forums, proposals)</td><td style="text-align:right">1.25x</td></tr>
+        <tr><td>4</td><td><strong>Monitoring</strong></td><td>Is resource use tracked transparently? (Public financials, on-chain treasury, dashboards)</td><td style="text-align:right">1.25x</td></tr>
+        <tr><td>5</td><td><strong>Graduated Sanctions</strong></td><td>Do rule violations get proportional responses? (Code of conduct, defunding criteria)</td><td style="text-align:right">0.75x</td></tr>
+        <tr><td>6</td><td><strong>Conflict Resolution</strong></td><td>Can disputes be resolved quickly and cheaply? (Mediation, appeals, arbitration)</td><td style="text-align:right">1.0x</td></tr>
+        <tr><td>7</td><td><strong>Rights to Organize</strong></td><td>Can the project self-govern without external override? (Legal entity, no hostile vetoes)</td><td style="text-align:right">1.0x</td></tr>
+        <tr><td>8</td><td><strong>Nested Enterprises</strong></td><td>Governance at multiple scales? (Working groups, tiered decisions, ecosystem participation)</td><td style="text-align:right">1.0x</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Example: Protocol Guild Ostrom Scores</h3>
+    <div class="ostrom-chart">
+      <svg viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg" width="420" height="420">
+        <rect width="500" height="500" fill="transparent"/>
+        <text x="250" y="28" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#e2e4e9">Protocol Guild &mdash; Ostrom Radar</text>
+        <text x="250" y="46" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#8b8fa3">Overall Score: 74.5 / 100</text>
+
+        <!-- Grid lines (20, 40, 60, 80, 100%) -->
+        <g stroke="#2a2e3f" stroke-width="0.5" fill="none">
+          <!-- 20% ring -->
+          <polygon points="250,218 272.6,218 272.6,250 272.6,282 250,282 227.4,282 227.4,250 227.4,218" opacity="0.3"/>
+          <!-- 40% ring -->
+          <polygon points="250,186 295.2,186 295.2,250 295.2,314 250,314 204.8,314 204.8,250 204.8,186" opacity="0.3"/>
+          <!-- 60% ring -->
+          <polygon points="250,154 317.9,154 317.9,250 317.9,346 250,346 182.1,346 182.1,250 182.1,154" opacity="0.3"/>
+          <!-- 80% ring -->
+          <polygon points="250,122 340.5,122 340.5,250 340.5,378 250,378 159.5,378 159.5,250 159.5,122" opacity="0.3"/>
+          <!-- 100% ring -->
+          <polygon points="250,90 363.1,90 363.1,250 363.1,410 250,410 136.9,410 136.9,250 136.9,90" opacity="0.3"/>
+        </g>
+
+        <!-- Axis lines -->
+        <g stroke="#2a2e3f" stroke-width="0.5">
+          <line x1="250" y1="90" x2="250" y2="410"/>
+          <line x1="136.9" y1="250" x2="363.1" y2="250"/>
+          <line x1="170" y1="120" x2="330" y2="380"/>
+          <line x1="330" y1="120" x2="170" y2="380"/>
+        </g>
+
+        <!-- Data polygon (Protocol Guild scores) -->
+        <!-- P1=88, P2=82, P3=76, P4=90, P5=38, P6=55, P7=78, P8=72 -->
+        <polygon
+          points="250,109.2  315.8,134.8  336.2,250  353.9,334  250,349.2  187.9,338  174.1,250  185.3,134.4"
+          fill="rgba(99,102,241,0.2)"
+          stroke="#6366f1"
+          stroke-width="2"
+        />
+
+        <!-- Data points -->
+        <g fill="#6366f1">
+          <circle cx="250" cy="109.2" r="4"/>  <!-- P1: 88 -->
+          <circle cx="315.8" cy="134.8" r="4"/>  <!-- P2: 82 -->
+          <circle cx="336.2" cy="250" r="4"/>  <!-- P3: 76 -->
+          <circle cx="353.9" cy="334" r="4"/>  <!-- P4: 90 -->
+          <circle cx="250" cy="349.2" r="4"/>  <!-- P5: 38 -->
+          <circle cx="187.9" cy="338" r="4"/>  <!-- P6: 55 -->
+          <circle cx="174.1" cy="250" r="4"/>  <!-- P7: 78 -->
+          <circle cx="185.3" cy="134.4" r="4"/>  <!-- P8: 72 -->
+        </g>
+
+        <!-- Labels -->
+        <g font-family="system-ui, sans-serif" font-size="10" fill="#8b8fa3" text-anchor="middle">
+          <text x="250" y="80">Boundaries (88)</text>
+          <text x="375" y="118" text-anchor="start">Congruence (82)</text>
+          <text x="375" y="254" text-anchor="start">Collective Choice (76)</text>
+          <text x="375" y="396" text-anchor="start">Monitoring (90)</text>
+          <text x="250" y="428">Sanctions (38)</text>
+          <text x="125" y="396" text-anchor="end">Conflict Res. (55)</text>
+          <text x="125" y="254" text-anchor="end">Rights to Org. (78)</text>
+          <text x="125" y="118" text-anchor="end">Nested Ent. (72)</text>
+        </g>
+      </svg>
+    </div>
+
+    <h3>Governance Maturity Levels</h3>
+    <table>
+      <thead><tr><th>Level</th><th>Score Range</th><th>Meaning</th></tr></thead>
+      <tbody>
+        <tr><td style="color: var(--green);">Established</td><td>60+</td><td>Governance principles are present and functional</td></tr>
+        <tr><td style="color: var(--yellow);">Developing</td><td>40&ndash;59</td><td>Aspirational governance, partially implemented</td></tr>
+        <tr><td style="color: var(--orange);">Nascent</td><td>20&ndash;39</td><td>Weak governance structures</td></tr>
+        <tr><td style="color: var(--red);">Absent</td><td>&lt;20</td><td>No meaningful governance observed</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- EAS ATTESTATIONS -->
+  <section id="eas-attestations">
+    <h2>EAS On-Chain Attestations</h2>
+    <p>The council produces <strong>Ethereum Attestation Service (EAS)</strong> compatible JSON that can be submitted on-chain to Base (Chain ID: 8453). This creates a permanent, verifiable record of the evaluation.</p>
+
+    <h3>What Gets Attested</h3>
+    <table>
+      <thead><tr><th>Field</th><th>Type</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><code>projectSlug</code></td><td>string</td><td>URL-safe project identifier</td></tr>
+        <tr><td><code>projectWallet</code></td><td>address</td><td>Project's Ethereum address (recipient)</td></tr>
+        <tr><td><code>epochNumber</code></td><td>uint8</td><td>Octant epoch number</td></tr>
+        <tr><td><code>ostromOverallScore</code></td><td>uint8</td><td>Weighted average of 8 Ostrom principles (0&ndash;100)</td></tr>
+        <tr><td><code>rule1</code>&ndash;<code>rule8</code></td><td>uint8</td><td>Individual Ostrom principle scores (0&ndash;100 each)</td></tr>
+        <tr><td><code>quantCompositeScore</code></td><td>uint8</td><td>Quantitative composite score</td></tr>
+        <tr><td><code>governanceMaturity</code></td><td>string</td><td>established / developing / nascent / absent</td></tr>
+        <tr><td><code>ipfsReportHash</code></td><td>string</td><td>IPFS hash of the full report (for verification)</td></tr>
+        <tr><td><code>evaluatedAt</code></td><td>string</td><td>ISO date of evaluation</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Example Attestation JSON</h3>
+    <div class="json-preview">
+<pre><code>{
+  <span class="json-key">"schema"</span>: <span class="json-string">"0x000...000"</span>,
+  <span class="json-key">"data"</span>: {
+    <span class="json-key">"recipient"</span>: <span class="json-string">"0xF6CBDd6Ea6EC3C4359e33de0Ac823701Cc56C6c4"</span>,
+    <span class="json-key">"revocable"</span>: <span class="json-number">true</span>,
+    <span class="json-key">"data"</span>: {
+      <span class="json-key">"projectSlug"</span>: <span class="json-string">"protocol-guild"</span>,
+      <span class="json-key">"ostromOverallScore"</span>: <span class="json-number">75</span>,
+      <span class="json-key">"rule1_boundaries"</span>: <span class="json-number">88</span>,
+      <span class="json-key">"rule2_congruence"</span>: <span class="json-number">82</span>,
+      <span class="json-key">"rule3_collectiveChoice"</span>: <span class="json-number">76</span>,
+      <span class="json-key">"rule4_monitoring"</span>: <span class="json-number">90</span>,
+      <span class="json-key">"rule5_sanctions"</span>: <span class="json-number">38</span>,
+      <span class="json-key">"rule6_conflictResolution"</span>: <span class="json-number">55</span>,
+      <span class="json-key">"rule7_recognitionOfRights"</span>: <span class="json-number">78</span>,
+      <span class="json-key">"rule8_nestedEnterprises"</span>: <span class="json-number">72</span>,
+      <span class="json-key">"quantCompositeScore"</span>: <span class="json-number">86</span>,
+      <span class="json-key">"governanceMaturity"</span>: <span class="json-string">"established"</span>,
+      <span class="json-key">"evaluatedAt"</span>: <span class="json-string">"2026-03-22"</span>
+    }
+  }
+}</code></pre>
+    </div>
+
+    <div class="callout">
+      <strong>Important:</strong> The agent produces the JSON but does NOT submit it on-chain. Calling <code>eas.attest()</code> is a user action from the dashboard. Private keys are never handled by agents.
+    </div>
+  </section>
+
+  <!-- ARCHITECTURE -->
+  <section id="architecture">
+    <h2>Architecture</h2>
+
+    <h3>Project Structure</h3>
+    <div class="tree">
+      <span class="dir">octant-council-builder/</span><br>
+      &#9500;&#9472;&#9472; <span class="dir">agents/</span> <span class="desc">&mdash; Agent definitions (auto-discovered by filename prefix)</span><br>
+      &#9474;&nbsp;&nbsp; &#9500;&#9472;&#9472; <span class="file">data-*.md</span> <span class="desc">&mdash; Wave 1 data agents (8)</span><br>
+      &#9474;&nbsp;&nbsp; &#9500;&#9472;&#9472; <span class="file">eval-*.md</span> <span class="desc">&mdash; Wave 2 eval agents (8)</span><br>
+      &#9474;&nbsp;&nbsp; &#9492;&#9472;&#9472; <span class="file">synth-*.md</span> <span class="desc">&mdash; Wave 3 synth agents (3)</span><br>
+      &#9500;&#9472;&#9472; <span class="dir">skills/</span> <span class="desc">&mdash; Skill definitions (orchestration layer)</span><br>
+      &#9500;&#9472;&#9472; <span class="dir">docs/</span> <span class="desc">&mdash; Skill docs + flow diagrams</span><br>
+      &#9500;&#9472;&#9472; <span class="dir">research/</span> <span class="desc">&mdash; Domain research (generated by setup/add-agent)</span><br>
+      &#9500;&#9472;&#9472; <span class="dir">council-out/</span> <span class="desc">&mdash; Evaluation output (one dir per project)</span><br>
+      &#9500;&#9472;&#9472; <span class="dir">production/</span> <span class="desc">&mdash; OptInPG: Railway backend + Netlify frontend</span><br>
+      &#9500;&#9472;&#9472; <span class="file">CLAUDE.md</span> <span class="desc">&mdash; Plugin instructions</span><br>
+      &#9500;&#9472;&#9472; <span class="file">SKILL.md</span> <span class="desc">&mdash; Skill registry</span><br>
+      &#9500;&#9472;&#9472; <span class="file">Ostrom-Rules.md</span> <span class="desc">&mdash; Ostrom's 8 principles (full text)</span><br>
+      &#9492;&#9472;&#9472; <span class="file">.claude-plugin/plugin.json</span> <span class="desc">&mdash; Plugin metadata</span>
+    </div>
+
+    <h3>Key Design Patterns</h3>
+    <div class="card-grid">
+      <div class="card">
+        <h4>Independence by Design</h4>
+        <p>Evaluators never see each other's scores. Each agent runs in isolation and writes to a separate file. Prevents groupthink.</p>
+      </div>
+      <div class="card">
+        <h4>Parallel Execution</h4>
+        <p>All agents within a wave spawn in a single message for true parallelism. Gates wait for completion before the next wave.</p>
+      </div>
+      <div class="card">
+        <h4>Auto-Discovery</h4>
+        <p>No registry or config file. The orchestrator discovers agents by filename prefix: <code>data-*</code>, <code>eval-*</code>, <code>synth-*</code>.</p>
+      </div>
+      <div class="card">
+        <h4>Token Injection</h4>
+        <p>Agent files use semantic placeholders (<code>$PROJECT</code>, <code>$DATA_DIR</code>, etc.) that the orchestrator fills in at runtime.</p>
+      </div>
+    </div>
+
+    <h3>Agent Lifecycle</h3>
+    <p>Every agent follows the same pattern:</p>
+    <pre><code><span class="comment">1.</span> <span class="cmd">TaskUpdate</span> &mdash; claim the task (status: "in_progress")
+<span class="comment">2.</span> <span class="string">[Specific work]</span> &mdash; fetch data / score dimensions / synthesize
+<span class="comment">3.</span> <span class="cmd">Write output</span> &mdash; structured JSON or markdown to $OUTPUT_DIR
+<span class="comment">4.</span> <span class="cmd">TaskUpdate</span> &mdash; complete the task (status: "completed")
+<span class="comment">5.</span> <span class="cmd">SendMessage</span> &mdash; summary to team lead</code></pre>
+  </section>
+
+  <!-- EXTENDING -->
+  <section id="extending">
+    <h2>Extending the Council</h2>
+
+    <h3>Adding a Custom Agent</h3>
+    <p>Two ways to add an agent:</p>
+
+    <h4>Option A: Use the guided flow</h4>
+    <pre><code><span class="cmd">/council:add-agent</span></code></pre>
+    <p>This runs a conversation to design the agent, researches the domain, generates the markdown file, and creates documentation.</p>
+
+    <h4>Option B: Create a file manually</h4>
+    <p>Create a markdown file in <code>agents/</code> with the right prefix:</p>
+    <pre><code><span class="comment"># agents/eval-security.md</span>
+---
+name: Security Evaluator
+description: Evaluate smart contract security posture
+tools: Read, Write, WebSearch, WebFetch, SendMessage, TaskUpdate
+---
+
+<span class="comment"># Security Evaluator: Smart Contract Audit Assessment</span>
+
+You are an independent security evaluator...
+
+<span class="comment">## Dimensions (each 1-10)</span>
+1. Audit coverage
+2. Bug bounty program
+3. Formal verification
+4. Incident response history
+5. Dependency risk
+
+<span class="comment">## Output</span>
+Write your evaluation to `$OUTPUT_DIR/security.md`</code></pre>
+
+    <h3>Removing an Agent</h3>
+    <pre><code><span class="cmd">/council:remove-agent</span>
+<span class="comment"># Shows list of agents and impact preview before deletion</span></code></pre>
+    <p>Or just delete the file from <code>agents/</code>. No config to update.</p>
+
+    <h3>Sharing Your Council</h3>
+    <p>A council is just a repo. Fork it, redesign the agents, push it, share the URL. Anyone can install it in Claude Code:</p>
+    <pre><code><span class="string">fetch https://raw.githubusercontent.com/YOU/YOUR_REPO/main/SKILL.md and follow the instructions</span></code></pre>
+  </section>
+
+  <!-- PRODUCTION DEPLOY -->
+  <section id="production">
+    <h2>Production Deploy (OptInPG Extension)</h2>
+    <p>The OptInPG extension adds the ability to deploy evaluation results as a live web dashboard.</p>
+
+    <div class="card-grid">
+      <div class="card">
+        <h4>Railway Backend</h4>
+        <p>FastAPI services for data collection, analysis coordination, and evaluation orchestration.</p>
+      </div>
+      <div class="card">
+        <h4>Netlify Frontend</h4>
+        <p>Next.js 15 dashboard with Ostrom radar charts, score cards, and shareable project links.</p>
+      </div>
+    </div>
+
+    <pre><code><span class="comment"># Deploy the dashboard</span>
+<span class="cmd">/council:deploy-to-production</span> <span class="string">protocol-guild</span>
+
+<span class="comment"># Test on 5 Octant projects end-to-end</span>
+<span class="cmd">/council:test-octant</span></code></pre>
+
+    <h3>Test Projects</h3>
+    <table>
+      <thead><tr><th>Project</th><th>Category</th></tr></thead>
+      <tbody>
+        <tr><td>Protocol Guild</td><td>Core protocol infrastructure</td></tr>
+        <tr><td>L2BEAT</td><td>L2 analytics &amp; research</td></tr>
+        <tr><td>growthepie</td><td>L2 data platform</td></tr>
+        <tr><td>Revoke.cash</td><td>Token approval security</td></tr>
+        <tr><td>Tor Project</td><td>Privacy infrastructure</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>Octant Council Builder &mdash; a <a href="https://github.com/SynthHack/octant-council-builder">Claude Code plugin</a> for multi-agent evaluation councils</p>
+    <p style="margin-top: 8px;">Built for the <a href="https://synthesis.md/hack/#octant">Octant Hackathon</a> | Powered by Claude Code Agent Teams</p>
+  </footer>
+
+</main>
+
+<script>
+  // Highlight active nav link on scroll
+  const sections = document.querySelectorAll('section[id], div[id], h2[id]');
+  const navLinks = document.querySelectorAll('nav a');
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        navLinks.forEach(link => {
+          link.classList.toggle('active',
+            link.getAttribute('href') === '#' + entry.target.id
+          );
+        });
+      }
+    });
+  }, { rootMargin: '-20% 0px -80% 0px' });
+
+  sections.forEach(section => observer.observe(section));
+
+  // Smooth scroll
+  navLinks.forEach(link => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      const target = document.querySelector(link.getAttribute('href'));
+      if (target) target.scrollIntoView({ behavior: 'smooth' });
+    });
+  });
+</script>
+
+</body>
+</html>
