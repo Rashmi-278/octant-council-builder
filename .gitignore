@@ -1,7 +1,8 @@
 council-out/
 
-# Local Claude config
-.claude/settings.local.json
+# Local Claude config and logs
+.claude/
+conversation-logs/
 
 # Production build artifacts
 production/frontend/node_modules/
