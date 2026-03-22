@@ -183,7 +183,7 @@ function ProjectPageContent() {
 
       <div className="flex items-center gap-3 mb-2">
         <h1 className="text-3xl font-bold capitalize">{slug.replace(/-/g, ' ')}</h1>
-        {slug === 'protocol-guild' ? (
+        {['protocol-guild', 'l2beat', 'growthepie', 'revoke-cash'].includes(slug) ? (
           <span className="bg-green-900/40 text-green-400 text-xs font-semibold px-2.5 py-1 rounded-full uppercase tracking-wider">
             Real Evaluation
           </span>

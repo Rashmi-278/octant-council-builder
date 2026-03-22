@@ -28,7 +28,7 @@ const OSTROM_PRINCIPLES = [
 ]
 
 // Protocol Guild is the only real evaluation — everything else is demo
-const REAL_SLUGS = new Set(['protocol-guild'])
+const REAL_SLUGS = new Set(['protocol-guild', 'l2beat', 'growthepie', 'revoke-cash'])
 
 function maturityColor(m: string | null | undefined): string {
   if (!m) return 'bg-gray-800/30 text-gray-400'
