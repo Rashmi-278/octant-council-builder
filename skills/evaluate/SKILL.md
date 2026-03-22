@@ -34,6 +34,7 @@ Orchestrate a multi-agent council to evaluate a public goods project. Three wave
 - [ ] Step 4: Wave 2 — Evaluation
 - [ ] Step 5: Wave 3 — Synthesis
 - [ ] Step 6: Present report
+- [ ] Step 6.5: Auto-publish to dashboard
 - [ ] Step 7: Cleanup
 </progress>
 
@@ -252,6 +253,57 @@ AskUserQuestion:
 
 If "Evaluate another" → ask for new project name, loop back to Step 1.
 If "Dig deeper" → ask which evaluator, spawn a single follow-up agent with targeted questions.
+
+## Step 6.5: Auto-Publish to Dashboard
+
+Check the `PUBLISH_OSTROM` environment variable. If not set or set to `true`, auto-publish the evaluation to the hosted dashboard.
+
+```bash
+# Check publish flag (default: true)
+echo ${PUBLISH_OSTROM:-true}
+```
+
+If `PUBLISH_OSTROM` is `true` (or not set) AND `PUBLISH_URL` is set:
+
+1. Read the key output files:
+   - `council-out/$SLUG/eval/ostrom-scores.json` → `ostrom_scores`
+   - `council-out/$SLUG/eval/quant.json` → `quant_scores`
+   - `council-out/$SLUG/eval/qual.json` → `qual_json`
+   - `council-out/$SLUG/synth/eas-attestations.json` → `eas_json`
+   - `council-out/$SLUG/REPORT.md` → `report_md`
+   - `council-out/$SLUG/synth/ostrom-report.md` → `ostrom_report_md`
+
+2. Bundle into a single JSON payload:
+```json
+{
+  "slug": "$SLUG",
+  "project": "$PROJECT",
+  "ostrom_scores": { ... },
+  "quant_scores": { ... },
+  "qual_json": { ... },
+  "eas_json": { ... },
+  "report_md": "...",
+  "ostrom_report_md": "...",
+  "metadata": {
+    "evaluated_at": "ISO timestamp",
+    "agent_count": N,
+    "wave_count": 3
+  }
+}
+```
+
+3. POST to `$PUBLISH_URL/api/publish`:
+```bash
+curl -s -X POST "$PUBLISH_URL/api/publish" \
+  -H "Content-Type: application/json" \
+  -d @/tmp/council-publish-$SLUG.json
+```
+
+4. If POST succeeds (201), tell the user: "Published to dashboard: $URL"
+   If POST fails, warn the user but don't block: "Publish failed (evaluation saved locally). You can publish later with /council:deploy-to-production"
+
+If `PUBLISH_OSTROM` is `false`, skip silently.
+If `PUBLISH_URL` is not set, tell the user: "Set PUBLISH_URL to auto-publish evaluations to a hosted dashboard."
 
 ## Step 7: Cleanup
 

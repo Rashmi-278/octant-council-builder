@@ -50,7 +50,10 @@
         "healthcheckPath": "/health"
       },
       "variables": {
-        "COUNCIL_OUT_DIR": "/app/council-out"
+        "COUNCIL_OUT_DIR": "/app/council-out",
+        "TURSO_URL": "${TURSO_URL}",
+        "TURSO_TOKEN": "${TURSO_TOKEN}",
+        "PUBLIC_URL": "${PUBLIC_URL}"
       }
     }
   }
