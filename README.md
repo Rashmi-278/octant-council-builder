@@ -112,7 +112,8 @@ The execution harness (orchestrator + wave pattern) stays the same. Swap agents 
 
 ### OptInPG Public Goods Extension (optional)
 
-**Live demo:** [optinpg-ostrom.netlify.app](https://optinpg-ostrom.netlify.app/)
+**Live dashboard:** [optinpg-ostrom.netlify.app](https://optinpg-ostrom.netlify.app/)
+**Documentation:** [rashmi-278.github.io/octant-council-builder](https://rashmi-278.github.io/octant-council-builder/)
 
 Adds Octant-native data sources, Elinor Ostrom's 8 Rules scoring, and EAS on-chain attestations. Zero changes to the original plugin.
 
